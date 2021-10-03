@@ -1,0 +1,12 @@
+﻿namespace Papers.Domain.Models.User
+{
+    public class UserInfo
+    {
+        public string FirstName { get; set; }
+
+        public string SecondName { get; set; }
+
+        // TODO отдельный класс, валидация, то-се
+        public string UserPhone { get; set; }
+    }
+}
