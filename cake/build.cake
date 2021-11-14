@@ -16,25 +16,44 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does(() =>
 {
-    DotNetCoreBuild("./src/*", new DotNetCoreBuildSettings
+    foreach (var projFIle in GetProjFiles())
     {
-        Configuration = configuration,
-    });
+        DotNetCoreBuild(projFIle.FullPath, new DotNetCoreBuildSettings
+        {
+            Configuration = configuration,
+        });        
+    }    
 });
 
 Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    DotNetCoreTest("./src/**/*", new DotNetCoreTestSettings
-    {
-        Configuration = configuration,
-        NoBuild = true,
-    });
 });
+
+
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
 //////////////////////////////////////////////////////////////////////
 
 RunTarget(target);
+
+
+//////////////////////////////////////////////////////////////////////
+// PRIVATES
+//////////////////////////////////////////////////////////////////////
+
+private FilePathCollection GetProjFiles(bool log = true)
+{
+    var files = GetFiles("../src/Papers/**/*.csproj");
+    if (log)
+    {
+        foreach (var file in files)
+        {
+            Information(file.FullPath);
+        }
+    }
+
+    return files;
+}
