@@ -1,8 +1,9 @@
-﻿using System.Data.Entity;
-using Papers.Data.Contract.Models;
-
-namespace Papers.Data.MsSql.Context
+﻿namespace Papers.Data.MsSql.Context
 {
+    using System.Data.Entity;
+    using Papers.Data.Contract.Models;
+
+
     public class MessageContext : DbContext
     {
         public MessageContext() : base()

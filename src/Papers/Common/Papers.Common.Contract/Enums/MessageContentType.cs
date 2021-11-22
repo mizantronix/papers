@@ -6,6 +6,6 @@
 
         Picture = 11,
 
-        Voice = 21,
+        Poll = 21,
     }
 }

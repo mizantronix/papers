@@ -7,7 +7,6 @@
     {
         public static void RegisterDomainDependencies(this IServiceCollection services)
         {
-            services.AddSingleton<IMessageManager, MessageManager>();
         }
     }
 }

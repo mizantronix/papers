@@ -20,27 +20,4 @@
 
         public IEnumerable<Message> GetMessages(MessageFilter filter);
     }
-
-    internal class MessageManager : IMessageManager
-    {
-        public SendResult SendMessage(long chatId, Message message)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public SendResult EditMessage(long messageId, Message message)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public SendResult RemoveMessage(long chatId)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public SendResult ForwardMessages(long chatId, IEnumerable<Message> missing_name)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
 }
