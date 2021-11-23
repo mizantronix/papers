@@ -1,8 +1,8 @@
 ﻿namespace Papers.Data.Contract.Models.Content
 {
-    public abstract class Content_picture
+    public abstract class _content_picture
     {
-        public abstract Content Content { get; set; }
+        public abstract _content Content { get; set; }
 
         public abstract byte[] Data { get; set; }
 

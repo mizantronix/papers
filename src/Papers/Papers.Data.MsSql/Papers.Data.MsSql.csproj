@@ -5,17 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Repository\**" />
-    <EmbeddedResource Remove="Repository\**" />
-    <None Remove="Repository\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Papers.Data.Contract\Papers.Data.Contract.csproj" />
+    <ProjectReference Include="..\Data\Papers.Data.Contract\Papers.Data.Contract.csproj" />
   </ItemGroup>
 
 </Project>
