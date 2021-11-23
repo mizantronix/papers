@@ -4,8 +4,8 @@
     {
         Text = 1,
 
-        Picture = 11,
+        Picture = 51,
 
-        Poll = 21,
+        Poll = 101,
     }
 }

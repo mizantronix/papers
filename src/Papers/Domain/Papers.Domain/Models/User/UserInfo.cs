@@ -6,6 +6,8 @@
 
         public string SecondName { get; set; }
 
+        public string Login { get; set; }
+
         // TODO отдельный класс, валидация, то-се
         public string UserPhone { get; set; }
     }

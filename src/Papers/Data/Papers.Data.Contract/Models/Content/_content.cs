@@ -4,6 +4,6 @@
     {
         public abstract long Id { get; set; }
 
-        public abstract byte Type { get; set; }
+        public abstract int Type { get; set; }
     }
 }

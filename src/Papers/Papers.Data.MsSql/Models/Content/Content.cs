@@ -11,7 +11,7 @@ namespace Papers.Data.MsSql.Models.Content
     internal class Content : _content
     {
         public override long Id { get; set; }
-        public override byte Type { get; set; }
+        public override int Type { get; set; }
 
         public Message Message { get; set; }
         public long MessageId { get; set; }
