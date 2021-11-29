@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Data.Entity.ModelConfiguration;
 
-    internal class UserChat
+    public class UserChat
     {
         public long UserId { get; set; }
         public User User { get; set; }

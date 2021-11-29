@@ -1,5 +1,7 @@
 namespace Papers.Api
 {
+    using System.IO;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -21,7 +23,13 @@ namespace Papers.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.RegisterDomainDependencies();
+            var builder = new ConfigurationBuilder();
+            builder.SetBasePath(Directory.GetCurrentDirectory());
+            builder.AddJsonFile("appsettings.json");
+            var config = builder.Build();
+            var connectionString = config.GetConnectionString("DataContext");
+            services.RegisterDomainDependencies(connectionString);
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -42,7 +50,6 @@ namespace Papers.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

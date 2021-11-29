@@ -1,17 +1,21 @@
-﻿using System;
-using System.Linq;
-using Papers.Data.MsSql.Models;
-using Papers.Data.MsSql.Models.Content;
-using Papers.Data.MsSql.Models.Content.Poll;
-
-namespace Papers.Data.MsSql.Repositories
+﻿namespace Papers.Data.MsSql.Repositories
 {
-    using Papers.Common.Contract.Enums;
-    using Papers.Data.Contract.Models;
-    using Papers.Data.Contract.Repositories;
+    using System;
+    using System.Linq;
+    using Papers.Data.MsSql.Models;
+    using Papers.Data.MsSql.Models.Content;
+    
     using Papers.Data.MsSql.Configuration;
+    using Papers.Common.Contract.Enums;
 
+    public interface IMessageRepository
+    {
+        SendResult Send(User from, Chat chat, Message message);
 
+        // TODO testing
+        Message GenerateMessage();
+    }
+    
     internal class MessageRepository : IMessageRepository
     {
         private readonly IUserRepository userRepository;
@@ -21,7 +25,7 @@ namespace Papers.Data.MsSql.Repositories
             this.userRepository = userRepository;
         }
 
-        public SendResult Send(_user @from, _chat chat, _message message)
+        public SendResult Send(User from, Chat chat, Message message)
         {
             using (var context = new DataContext())
             {
@@ -85,7 +89,7 @@ namespace Papers.Data.MsSql.Repositories
             return SendResult.Success;
         }
 
-        public _message GenerateMessage()
+        public Message GenerateMessage()
         {
             var user = this.userRepository.GetDefault();
             var message = new Message

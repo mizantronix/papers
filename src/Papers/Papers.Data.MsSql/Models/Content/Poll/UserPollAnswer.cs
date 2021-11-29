@@ -1,18 +1,18 @@
-﻿namespace Papers.Data.MsSql.Models.Content.Poll
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Papers.Data.MsSql.Models.Content.Poll
 {
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.ModelConfiguration;
-
-    using Papers.Data.Contract.Models;
-    using Papers.Data.Contract.Models.Content.Poll;
-
-    internal class UserPollAnswer : _content_poll_result
+    
+    public class UserPollAnswer
     {
-        public override _user User { get; set; }
+        public long Id { get; set; }
+        public User User { get; set; }
         public long UserId { get; set; }
 
-        public override _content_poll Poll { get; set; }
+        public ContentPoll Poll { get; set; }
         public long PollId { get; set; }
     }
 
@@ -21,7 +21,7 @@
         public UserPollAnswerConfiguration()
         {
             ToTable("Content_Poll_UserAnswer_Xref", "dbo");
-            
+            this.HasKey(ua => ua.Id);
             this.HasRequired(ua => (ContentPoll)ua.Poll)
                 .WithMany(cp => (ICollection<UserPollAnswer>) cp.UserPollAnswers)
                 .HasForeignKey(c => c.PollId);

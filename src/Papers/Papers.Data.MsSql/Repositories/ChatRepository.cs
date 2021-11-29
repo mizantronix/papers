@@ -1,14 +1,17 @@
 ﻿namespace Papers.Data.MsSql.Repositories
 {
     using System.Linq;
-    using Papers.Data.Contract.Models;
-    using Papers.Data.Contract.Repositories;
     using Papers.Data.MsSql.Configuration;
     using Papers.Data.MsSql.Models;
-    
+
+    public interface IChatRepository
+    {
+        public Chat GetChatById(long id);
+    }
+
     internal class ChatRepository : IChatRepository
     {
-        public _chat GetChatById(long id)
+        public Chat GetChatById(long id)
         {
             using (var context = new DataContext())
             {

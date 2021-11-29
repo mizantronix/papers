@@ -28,5 +28,12 @@ namespace Papers.Api.Controllers
 
             return SendResult.Success;
         }
+
+        [HttpGet]
+        public string Test()
+        {
+            this.messageManager.Test();
+            return "123";
+        }
     }
 }

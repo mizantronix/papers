@@ -1,6 +1,7 @@
 ﻿namespace Papers.Data.MsSql.Configuration
 {
-    using System.Data.Entity;
+    using Microsoft.EntityFrameworkCore;
+
     using Papers.Data.MsSql.Models;
     using Papers.Data.MsSql.Models.Content;
     using Papers.Data.MsSql.Models.Content.Poll;

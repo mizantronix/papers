@@ -1,14 +1,16 @@
-﻿namespace Papers.Data.MsSql.Models.Content
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Papers.Data.MsSql.Models.Content
 {
+    using System.ComponentModel.DataAnnotations;
     using System.Data.Entity.ModelConfiguration;
-
-    using Papers.Data.Contract.Models.Content;
-
-    internal class ContentPicture : _content_picture
+    
+    public class ContentPicture
     {
-        public override _content Content { get; set; }
-        public override byte[] Data { get; set; }
-        public override string Title { get; set; }
+        public long Id { get; set; }
+        public Content Content { get; set; }
+        public byte[] Data { get; set; }
+        public string Title { get; set; }
     }
 
     internal class ContentPictureConfiguration : EntityTypeConfiguration<ContentPicture>
@@ -17,6 +19,7 @@
         {
             ToTable("Content_Picture", "dbo");
 
+            this.HasKey(cp => cp.Id);
             this.Property(cp => cp.Data).IsRequired();
             this.Property(cp => cp.Title).IsOptional().HasMaxLength(100);
 

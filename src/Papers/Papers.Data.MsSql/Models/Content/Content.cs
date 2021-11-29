@@ -1,17 +1,15 @@
-﻿using Papers.Data.MsSql.Models.Content.Poll;
-
-namespace Papers.Data.MsSql.Models.Content
+﻿namespace Papers.Data.MsSql.Models.Content
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.ModelConfiguration;
 
-    using Papers.Data.Contract.Models.Content;
+    using Papers.Data.MsSql.Models.Content.Poll;
 
-    internal class Content : _content
+    public class Content
     {
-        public override long Id { get; set; }
-        public override int Type { get; set; }
+        public long Id { get; set; }
+        public int Type { get; set; }
 
         public Message Message { get; set; }
         public long MessageId { get; set; }

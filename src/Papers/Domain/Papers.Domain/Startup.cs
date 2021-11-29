@@ -6,9 +6,9 @@
 
     public static class Startup
     {
-        public static void RegisterDomainDependencies(this IServiceCollection services)
+        public static void RegisterDomainDependencies(this IServiceCollection services, string connectionString)
         {
-            services.RegisterDataDependencies();
+            services.RegisterDataDependencies(connectionString);
             services.AddSingleton<IMessageManager, MessageManager>();
         }
     }

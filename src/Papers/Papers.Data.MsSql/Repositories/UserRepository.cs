@@ -1,16 +1,18 @@
-﻿using System;
-using System.Linq;
-using Papers.Data.Contract.Models;
-using Papers.Data.MsSql.Configuration;
-using Papers.Data.MsSql.Models;
-
-namespace Papers.Data.MsSql.Repositories
+﻿namespace Papers.Data.MsSql.Repositories
 {
-    using Papers.Data.Contract.Repositories;
+    using System;
+    using System.Linq;
+    using Papers.Data.MsSql.Configuration;
+    using Papers.Data.MsSql.Models;
+
+    public interface IUserRepository
+    {
+        public User GetDefault();
+    }
 
     internal class UserRepository : IUserRepository
     {
-        public _user GetDefault()
+        public User GetDefault()
         {
             using (var context = new DataContext())
             {

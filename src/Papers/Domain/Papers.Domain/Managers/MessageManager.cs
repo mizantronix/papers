@@ -1,16 +1,13 @@
-﻿using System;
-using Papers.Data.Contract.Models;
-using Papers.Domain.Models.User;
-
-namespace Papers.Domain.Managers
+﻿namespace Papers.Domain.Managers
 {
     using Papers.Common.Contract.Enums;
-    using Papers.Data.Contract.Repositories;
-    using Papers.Domain.Models.Message;
+    using Papers.Data.MsSql.Repositories;
 
     public interface IMessageManager
     {
         public SendResult Send(long chatId);
+
+        void Test();
     }
 
     internal class MessageManager : IMessageManager
@@ -24,6 +21,11 @@ namespace Papers.Domain.Managers
             this.messageRepository = messageRepository;
             this.chatRepository = chatRepository;
             this.userRepository = userRepository;
+        }
+
+        public void Test()
+        {
+            var user = this.userRepository.GetDefault();
         }
 
         public SendResult Send(long chatId)

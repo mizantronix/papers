@@ -1,19 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity.ModelConfiguration;
-
-namespace Papers.Data.MsSql.Models
+﻿namespace Papers.Data.MsSql.Models
 {
-    using Papers.Data.Contract.Models;
-
-    internal class UserInfo : _userInfo
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.ModelConfiguration;
+    
+    public class UserInfo
     {
-        public override long Id { get; set; }
-        public override _user User { get; set; }
-        public override string FirstName { get; set; }
-        public override string LastName { get; set; }
-        public override string Login { get; set; }
-        public override string PhoneNumber { get; set; }
+        public long Id { get; set; }
+        public User User { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Login { get; set; }
+        public string PhoneNumber { get; set; }
     }
     
     internal class UserInfoConfiguration : EntityTypeConfiguration<UserInfo>

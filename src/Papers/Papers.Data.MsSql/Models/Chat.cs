@@ -2,21 +2,18 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.ModelConfiguration;
-
-    using Papers.Data.Contract.Models;
-
-    internal class Chat : _chat
+    
+    public class Chat 
     {
-        public override long Id { get; set; }
-        public override bool IsPrivate { get; set; }
-        public override bool IsSecret { get; set; }
+        public long Id { get; set; }
+        public bool IsPrivate { get; set; }
+        public bool IsSecret { get; set; }
         public IEnumerable<UserChat> UserChats { get; set; }
-        public override bool IsGroup { get; set; }
-        public override _user MasterUser { get; set; }
+        public bool IsGroup { get; set; }
+        public User MasterUser { get; set; }
         public long? MasterUserId { get; set; }
-        public override byte[] Picture { get; set; }
-        public override IEnumerable<_message> Messages { get; set; }
+        public byte[] Picture { get; set; }
+        public IEnumerable<Message> Messages { get; set; }
     }
 
     internal class ChatConfiguration : EntityTypeConfiguration<Chat>
