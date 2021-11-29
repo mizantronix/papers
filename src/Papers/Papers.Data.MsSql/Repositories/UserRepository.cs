@@ -1,4 +1,7 @@
-﻿namespace Papers.Data.MsSql.Repositories
+﻿using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+
+namespace Papers.Data.MsSql.Repositories
 {
     using System;
     using System.Linq;
@@ -12,9 +15,19 @@
 
     internal class UserRepository : IUserRepository
     {
+        private readonly DbContextOptions<DataContext> _contextOptions;
+
+        public UserRepository()
+        {
+            var opts = new DbContextOptionsBuilder<DataContext>();
+            var test1 = ConfigurationManager.ConnectionStrings["DataContext"];
+            opts.UseSqlServer("Server=localhost;Database=Papers;Trusted_Connection=True;");
+            this._contextOptions = opts.Options;
+        }
+
         public User GetDefault()
         {
-            using (var context = new DataContext())
+            using (var context = new DataContext(this._contextOptions))
             {
                 var userInfo = context.UserInfo.FirstOrDefault(ui =>
                     ui.Login.Equals("mizantronix", StringComparison.InvariantCultureIgnoreCase));

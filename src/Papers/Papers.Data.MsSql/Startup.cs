@@ -10,11 +10,7 @@
     {
         public static void RegisterDataDependencies(this IServiceCollection services, string connectionString)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-            var options = optionsBuilder
-                .UseSqlServer(connectionString)
-                .Options;
-
+            services.AddDbContext<DataContext>(o => o.UseSqlServer(connectionString));
             services.AddSingleton<IChatRepository, ChatRepository>();
             services.AddSingleton<IMessageRepository, MessageRepository>();
             services.AddSingleton<IUserRepository, UserRepository>();

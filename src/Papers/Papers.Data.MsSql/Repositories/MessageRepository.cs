@@ -1,4 +1,7 @@
-﻿namespace Papers.Data.MsSql.Repositories
+﻿using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+
+namespace Papers.Data.MsSql.Repositories
 {
     using System;
     using System.Linq;
@@ -20,14 +23,19 @@
     {
         private readonly IUserRepository userRepository;
 
+        private readonly DbContextOptions<DataContext> _contextOptions;
+        
         public MessageRepository(IUserRepository userRepository)
         {
             this.userRepository = userRepository;
+            var opts = new DbContextOptionsBuilder<DataContext>();
+            opts.UseSqlServer("Server=localhost;Database=Papers;Trusted_Connection=True;");
+            this._contextOptions = opts.Options;
         }
 
         public SendResult Send(User from, Chat chat, Message message)
         {
-            using (var context = new DataContext())
+            using (var context = new DataContext(_contextOptions))
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == @from.Id);
                 if (user == null)
