@@ -14,6 +14,9 @@ namespace Papers.Data.MsSql.Configuration
         // TODO mb separate main & secondary models (like messages/contents & users/chats/bla-bla)
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
+#if DEBUG
+            Database.EnsureDeleted();
+#endif
             Database.EnsureCreated();
         }
 
@@ -31,7 +34,13 @@ namespace Papers.Data.MsSql.Configuration
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=Papers;Trusted_Connection=True;");
+            var connectionString =
+#if DEBUG
+                "Server=localhost;Database=Papers;Trusted_Connection=True;";
+#elif RELEASE
+                "release connection string";
+#endif
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

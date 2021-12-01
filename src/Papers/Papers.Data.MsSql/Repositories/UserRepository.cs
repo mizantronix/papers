@@ -21,7 +21,13 @@ namespace Papers.Data.MsSql.Repositories
         {
             var opts = new DbContextOptionsBuilder<DataContext>();
             var test1 = ConfigurationManager.ConnectionStrings["DataContext"];
-            opts.UseSqlServer("Server=localhost;Database=Papers;Trusted_Connection=True;");
+            var connectionString =
+#if DEBUG
+                "Server=localhost;Database=Papers;Trusted_Connection=True;";
+#elif RELEASE
+                "release connection string";
+#endif
+            opts.UseSqlServer(connectionString);
             this._contextOptions = opts.Options;
         }
 
@@ -29,8 +35,7 @@ namespace Papers.Data.MsSql.Repositories
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                var userInfo = context.UserInfo.FirstOrDefault(ui =>
-                    ui.Login.Equals("mizantronix", StringComparison.InvariantCultureIgnoreCase));
+                var userInfo = context.UserInfo.FirstOrDefault(ui => ui.Login == "mizantronix");
 
                 if (userInfo == null)
                 {

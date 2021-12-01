@@ -10,6 +10,7 @@
         {
             services.RegisterDataDependencies(connectionString);
             services.AddSingleton<IMessageManager, MessageManager>();
+            services.AddSingleton<IUserManager, UserManager>();
         }
     }
 }

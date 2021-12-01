@@ -29,7 +29,13 @@ namespace Papers.Data.MsSql.Repositories
         {
             this.userRepository = userRepository;
             var opts = new DbContextOptionsBuilder<DataContext>();
-            opts.UseSqlServer("Server=localhost;Database=Papers;Trusted_Connection=True;");
+            var connectionString =
+#if DEBUG
+                "Server=localhost;Database=Papers;Trusted_Connection=True;";
+#elif RELEASE
+                "release connection string";
+#endif
+            opts.UseSqlServer(connectionString);
             this._contextOptions = opts.Options;
         }
 
