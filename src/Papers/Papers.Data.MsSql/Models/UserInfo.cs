@@ -10,5 +10,6 @@
         public string LastName { get; set; }
         public string Login { get; set; }
         public string PhoneNumber { get; set; }
+        public byte[] Picture { get; set; }
     }
 }

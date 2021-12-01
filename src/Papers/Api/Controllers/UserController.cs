@@ -1,5 +1,7 @@
 ﻿using Papers.Common.Contract.Enums;
+using Papers.Common.Contract.Helpers;
 using Papers.Domain.Managers;
+using Papers.Domain.Models.User;
 
 namespace Papers.Api.Controllers
 {
@@ -23,25 +25,32 @@ namespace Papers.Api.Controllers
 
         [HttpPost]
         [Route("register")]
-        public SendResult Register()
+        public SendResult Register(string phone, string login, string firstName, string LastName = null)
         {
-
+            this.userManager.Register(
+                new UserInfo
+                {
+                    Login = login,
+                    FirstName = firstName,
+                    LastName = LastName,
+                    UserPhone = phone
+                });
             return SendResult.Success;
         }
 
         [HttpPost]
-        public SendResult Send(long chatId)
+        [Route("confirm")]
+        public SendResult Confirm(string phone, string code)
         {
-            this.messageManager.Send(1);
-
+            this.userManager.ConfirmUser(phone, code);
             return SendResult.Success;
         }
 
         [HttpGet]
-        public string Test()
+        [Route("test")]
+        public string TestGenerator(long id, string phone, string login)
         {
-            this.messageManager.Test();
-            return "123";
+            return ConfirmCodeGenerator.GenerateConfirmCode(id, phone, login);
         }
     }
 }

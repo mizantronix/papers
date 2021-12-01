@@ -1,16 +1,28 @@
-﻿using System.Configuration;
-using Microsoft.EntityFrameworkCore;
-
-namespace Papers.Data.MsSql.Repositories
+﻿namespace Papers.Data.MsSql.Repositories
 {
     using System;
     using System.Linq;
+    using System.Configuration;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using Papers.Common.Contract.Enums;
     using Papers.Data.MsSql.Configuration;
     using Papers.Data.MsSql.Models;
 
     public interface IUserRepository
     {
-        public User GetDefault();
+        User GetDefault();
+
+        User Register();
+
+        User GetByPhone(string phone);
+
+        User BeginRegistration(string phone, string login, string firstName, string lastName);
+
+        User ContinueRegistration(string phone, string login, string firstName, string lastName);
+
+        User ConfirmUser(string phone);
     }
 
     internal class UserRepository : IUserRepository
@@ -64,6 +76,78 @@ namespace Papers.Data.MsSql.Repositories
                     context.Users.Add(user);
                     context.SaveChanges();
                 }
+
+                return user;
+            }
+        }
+
+        public User Register()
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetByPhone(string phone)
+        {
+            using (var context = new DataContext(this._contextOptions))
+            {
+                return context.UserInfo.FirstOrDefault(ui => ui.PhoneNumber == phone)?.User;
+            }
+        }
+
+        public User BeginRegistration(string phone, string login, string firstName, string lastName)
+        {
+            var user = new User
+            {
+                UserState = UserState.New.ToByteState(),
+                UserInfo = new UserInfo
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Login = login,
+                    PhoneNumber = phone
+                }
+            };
+
+            using (var context = new DataContext(this._contextOptions))
+            {
+                context.Users.Add(user);
+                context.SaveChanges();
+            }
+
+            return user;
+        }
+
+        public User ContinueRegistration(string phone, string login, string firstName, string lastName)
+        {
+            using (var context = new DataContext(this._contextOptions))
+            {
+                var user = context.UserInfo.First(ui => ui.PhoneNumber == phone).User;
+                
+                user.RegisterDate = DateTime.Now;
+
+                user.UserInfo.FirstName = firstName;
+                user.UserInfo.LastName = lastName;
+                user.UserInfo.Login = login;
+                user.UserState = UserState.NeedVerification.ToByteState();
+
+                context.SaveChanges();
+
+                return user;
+            }
+        }
+
+        public User ConfirmUser(string phone)
+        {
+            using (var context = new DataContext(this._contextOptions))
+            {
+                var user = context.UserInfo.First(ui => ui.PhoneNumber == phone).User;
+                user.UserState = UserState.Registered.ToByteState();
+                if (user.RegisterDate == null)
+                {
+                    user.RegisterDate = DateTime.Now;
+                }
+
+                context.SaveChanges();
 
                 return user;
             }
