@@ -1,4 +1,6 @@
-﻿namespace Papers.Data.MsSql.Repositories
+﻿using Papers.Common.Exceptions;
+
+namespace Papers.Data.MsSql.Repositories
 {
     using System;
     using System.Linq;
@@ -89,7 +91,9 @@
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                return context.UserInfo.FirstOrDefault(ui => ui.PhoneNumber == phone)?.User;
+                var ui = context.Users.FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
+
+                return ui;
             }
         }
 
@@ -109,6 +113,10 @@
 
             using (var context = new DataContext(this._contextOptions))
             {
+                if (context.UserInfo.FirstOrDefault(ui => ui.Login == login) != null)
+                {
+                    throw new PapersBusinessException("Login already exists");
+                }
                 context.Users.Add(user);
                 context.SaveChanges();
             }
@@ -120,7 +128,7 @@
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                var user = context.UserInfo.First(ui => ui.PhoneNumber == phone).User;
+                var user = context.Users.First(u => u.UserInfo.PhoneNumber == phone);
                 
                 user.RegisterDate = DateTime.Now;
 
@@ -139,7 +147,7 @@
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                var user = context.UserInfo.First(ui => ui.PhoneNumber == phone).User;
+                var user = context.Users.First(u => u.UserInfo.PhoneNumber == phone)
                 user.UserState = UserState.Registered.ToByteState();
                 if (user.RegisterDate == null)
                 {

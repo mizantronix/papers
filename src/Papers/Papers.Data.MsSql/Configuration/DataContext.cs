@@ -76,7 +76,7 @@
             modelBuilder.Entity<User>().HasKey(u => u.Id);
 
             modelBuilder.Entity<User>().HasOne(u => u.UserInfo)
-                .WithOne(ui => ui.User);
+                .WithOne(ui => ui.User).HasForeignKey<User>(u => u.UserInfoId);
 
             // UserChat
             modelBuilder.Entity<UserChat>().ToTable("User_Chat_Xref", "dbo");
@@ -119,7 +119,10 @@
             modelBuilder.Entity<ContentText>().Property(ct => ct.Text).IsRequired();
             modelBuilder.Entity<ContentText>().Property(ct => ct.Title).IsRequired(false).HasMaxLength(100);
 
-            modelBuilder.Entity<ContentText>().HasOne(ct => ct.Content).WithOne(c => c.ContentText).HasForeignKey<Content>(ct => ct.MessageId);
+            modelBuilder.Entity<ContentText>()
+                .HasOne(ct => ct.Content)
+                .WithOne(c => c.ContentText)
+                .HasForeignKey<Content>(ct => ct.MessageId);
 
             // ContentPicture
             modelBuilder.Entity<ContentPicture>().ToTable("Content_Picture", "dbo");
@@ -128,30 +131,39 @@
             modelBuilder.Entity<ContentPicture>().Property(cp => cp.Data).IsRequired();
             modelBuilder.Entity<ContentPicture>().Property(cp => cp.Title).IsRequired(false).HasMaxLength(100);
             
-            modelBuilder.Entity<ContentPicture>().HasOne(cp => cp.Content).WithOne(c => c.ContentPicture).HasForeignKey<Content>(ct => ct.MessageId);
+            modelBuilder.Entity<ContentPicture>()
+                .HasOne(cp => cp.Content)
+                .WithOne(c => c.ContentPicture)
+                .HasForeignKey<Content>(ct => ct.MessageId);
 
             // ContentPoll
             modelBuilder.Entity<ContentPoll>().ToTable("Content_Poll", "dbo");
 
             modelBuilder.Entity<ContentPoll>().HasKey(cp => cp.Id);
             modelBuilder.Entity<ContentPoll>().Property(cp => cp.AllowMultiple).IsRequired();
-            modelBuilder.Entity<ContentPoll>().HasOne(cp => (Content)cp.Content).WithOne(c => c.ContentPoll).HasForeignKey<Content>(ct => ct.MessageId);
+            modelBuilder.Entity<ContentPoll>()
+                .HasOne(cp => (Content)cp.Content)
+                .WithOne(c => c.ContentPoll)
+                .HasForeignKey<Content>(ct => ct.MessageId);
 
             // UserPollAnswer
             modelBuilder.Entity<UserPollAnswer>().ToTable("Content_Poll_UserAnswer_Xref", "dbo");
             modelBuilder.Entity<UserPollAnswer>().HasKey(ua => ua.Id);
-            modelBuilder.Entity<UserPollAnswer>().HasOne(ua => (ContentPoll)ua.Poll)
+            modelBuilder.Entity<UserPollAnswer>()
+                .HasOne(ua => (ContentPoll)ua.Poll)
                 .WithMany(cp => (ICollection<UserPollAnswer>)cp.UserPollAnswers)
                 .HasForeignKey(c => c.PollId);
 
-            modelBuilder.Entity<UserPollAnswer>().HasOne(ua => (User)ua.User)
+            modelBuilder.Entity<UserPollAnswer>()
+                .HasOne(ua => (User)ua.User)
                 .WithMany(u => (ICollection<UserPollAnswer>)u.UserPollAnswers)
                 .HasForeignKey(c => c.UserId);
 
             // PollAnswer
             modelBuilder.Entity<PollAnswer>().ToTable("Content_Poll_Answer", "dbo");
             modelBuilder.Entity<PollAnswer>().HasKey(cpa => cpa.Id);
-            modelBuilder.Entity<PollAnswer>().HasOne(cpa => cpa.ContentPoll)
+            modelBuilder.Entity<PollAnswer>()
+                .HasOne(cpa => cpa.ContentPoll)
                 .WithMany(cp => (ICollection<PollAnswer>)cp.Answers)
                 .HasForeignKey(c => c.ContentPollId);
 
