@@ -91,9 +91,8 @@ namespace Papers.Data.MsSql.Repositories
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                var ui = context.Users.FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
-
-                return ui;
+                var u = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
+                return u;
             }
         }
 
@@ -147,7 +146,7 @@ namespace Papers.Data.MsSql.Repositories
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                var user = context.Users.First(u => u.UserInfo.PhoneNumber == phone)
+                var user = context.Users.First(u => u.UserInfo.PhoneNumber == phone);
                 user.UserState = UserState.Registered.ToByteState();
                 if (user.RegisterDate == null)
                 {

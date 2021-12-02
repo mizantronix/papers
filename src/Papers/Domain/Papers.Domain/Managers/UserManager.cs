@@ -1,4 +1,6 @@
-﻿namespace Papers.Domain.Managers
+﻿using Papers.Common.Helpers;
+
+namespace Papers.Domain.Managers
 {
     using System;
     
@@ -64,6 +66,12 @@
 
         public long ConfirmUser(string phone, string code)
         {
+            var user = this._userRepository.GetByPhone(phone);
+            if (user == null || ConfirmCodeGenerator.GenerateConfirmCode(user.Id, phone, user.UserInfo.Login) != code)
+            {
+                throw new PapersBusinessException("Wrong confirm code");
+            }
+
             // TODO Code verification
             return this._userRepository.ConfirmUser(phone).Id;
         }

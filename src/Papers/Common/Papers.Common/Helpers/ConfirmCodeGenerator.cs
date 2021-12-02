@@ -1,26 +1,27 @@
 ﻿namespace Papers.Common.Helpers
 {
+    using System;
     using System.Linq;
 
     public static class ConfirmCodeGenerator
     {
-        // TODO test generator
         public static string GenerateConfirmCode(long id, string phoneNumber, string login)
         {
+            var loginLength = login.Length;
+
             int n1;
             unchecked
             {
-                n1 = id.GetHashCode() * 16 + 17;
-                if (n1 < 0)
-                {
-                    n1 *= -1;
-                }
+                n1 = Convert.ToInt32((Math.Log2(loginLength) + login.Count(c => c is 'a' or 'o' or 'i')) * 111.11) ;
             }
 
             int n2;
             unchecked
             {
-                n2 = phoneNumber.GetHashCode() * 7 + 41;
+                n2 = 
+                    17 + 
+                    Convert.ToInt32(phoneNumber[..5]) - 
+                    Convert.ToInt32(phoneNumber.Substring(5, 5));
                 if (n2 < 0)
                 {
                     n2 *= -1;
@@ -28,13 +29,11 @@
             }
 
             int n3;
+            
+            // TODO bad function
             unchecked
             {
-                n3 = login.GetHashCode() * 111 + 11;
-                if (n3 < 0)
-                {
-                    n3 *= -1;
-                }
+                n3 = (Convert.ToInt32(id) * Convert.ToInt32(id + 43) + 13 + Convert.ToInt32(id) % 7);
             }
 
             return
