@@ -1,7 +1,8 @@
 ﻿namespace Papers.Domain.Models.User
 {
     using System;
-    using Papers.Common.Contract.Enums;
+
+    using Papers.Common.Enums;
 
     public class User
     {

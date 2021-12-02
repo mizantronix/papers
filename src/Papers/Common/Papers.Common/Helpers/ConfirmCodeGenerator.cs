@@ -1,7 +1,7 @@
-﻿using System.Linq;
-
-namespace Papers.Common.Contract.Helpers
+﻿namespace Papers.Common.Helpers
 {
+    using System.Linq;
+
     public static class ConfirmCodeGenerator
     {
         // TODO test generator

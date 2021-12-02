@@ -1,14 +1,12 @@
-﻿using Papers.Common.Contract.Enums;
-using Papers.Common.Contract.Helpers;
-using Papers.Domain.Managers;
-using Papers.Domain.Models.User;
-
-namespace Papers.Api.Controllers
+﻿namespace Papers.Api.Controllers
 {
-    using System.Collections.Generic;
-
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+
+    using Papers.Common.Enums;
+    using Papers.Common.Helpers;
+    using Papers.Domain.Managers;
+    using Papers.Domain.Models.User;
 
     [ApiController]
     [Route("users")]

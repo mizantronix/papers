@@ -1,9 +1,8 @@
-﻿using System;
-
-namespace Papers.Data.MsSql.Models
+﻿namespace Papers.Data.MsSql.Models
 {
+    using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
+
     using Papers.Data.MsSql.Models.Content.Poll;
 
     public class User

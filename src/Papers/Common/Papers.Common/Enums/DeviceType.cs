@@ -1,4 +1,4 @@
-﻿namespace Papers.Common.Contract.Enums
+﻿namespace Papers.Common.Enums
 {
     public enum DeviceType
     {

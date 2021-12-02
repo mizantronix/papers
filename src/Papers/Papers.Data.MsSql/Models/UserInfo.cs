@@ -1,7 +1,5 @@
 ﻿namespace Papers.Data.MsSql.Models
 {
-    using System.ComponentModel.DataAnnotations.Schema;
-    
     public class UserInfo
     {
         public long Id { get; set; }

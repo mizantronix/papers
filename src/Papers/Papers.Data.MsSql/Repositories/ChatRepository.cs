@@ -1,9 +1,9 @@
-﻿using System.Configuration;
-using Microsoft.EntityFrameworkCore;
-
-namespace Papers.Data.MsSql.Repositories
+﻿namespace Papers.Data.MsSql.Repositories
 {
     using System.Linq;
+
+    using Microsoft.EntityFrameworkCore;
+
     using Papers.Data.MsSql.Configuration;
     using Papers.Data.MsSql.Models;
 

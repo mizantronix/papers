@@ -1,6 +1,5 @@
 ﻿namespace Papers.Data.MsSql.Models
 {
-    using System.Collections.Generic;
     public class UserChat
     {
         public long UserId { get; set; }

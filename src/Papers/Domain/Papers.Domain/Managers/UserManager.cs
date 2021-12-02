@@ -1,9 +1,9 @@
 ﻿namespace Papers.Domain.Managers
 {
     using System;
-
-    using Papers.Common.Contract.Enums;
-    using Papers.Common.Contract.Exceptions;
+    
+    using Papers.Common.Enums;
+    using Papers.Common.Exceptions;
     using Papers.Data.MsSql.Repositories;
     using Papers.Domain.Models.User;
 

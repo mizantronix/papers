@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-
-namespace Papers.Data.MsSql.Configuration
+﻿namespace Papers.Data.MsSql.Configuration
 {
+    using System.Collections.Generic;
+
     using Microsoft.EntityFrameworkCore;
 
     using Papers.Data.MsSql.Models;
@@ -15,7 +14,7 @@ namespace Papers.Data.MsSql.Configuration
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 #if DEBUG
-            Database.EnsureDeleted();
+            // Database.EnsureDeleted();
 #endif
             Database.EnsureCreated();
         }

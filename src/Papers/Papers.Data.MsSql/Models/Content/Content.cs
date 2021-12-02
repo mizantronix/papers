@@ -1,8 +1,5 @@
 ﻿namespace Papers.Data.MsSql.Models.Content
 {
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     using Papers.Data.MsSql.Models.Content.Poll;
 
     public class Content

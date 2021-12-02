@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Papers.Common.Contract.Enums
+﻿namespace Papers.Common.Enums
 {
+    using System;
+
     public static class EnumExtensionMethods
     {
         public static byte ToByteState(this UserState state)

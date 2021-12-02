@@ -1,6 +1,6 @@
 ﻿namespace Papers.Domain.Managers
 {
-    using Papers.Common.Contract.Enums;
+    using Papers.Common.Enums;
     using Papers.Data.MsSql.Repositories;
 
     public interface IMessageManager

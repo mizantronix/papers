@@ -1,6 +1,5 @@
 ﻿namespace Papers.Data.MsSql.Models.Content
 {
-
     public class ContentText
     {
         public long Id { get; set; }

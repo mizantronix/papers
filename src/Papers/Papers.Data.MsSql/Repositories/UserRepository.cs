@@ -5,8 +5,7 @@
     using System.Configuration;
 
     using Microsoft.EntityFrameworkCore;
-
-    using Papers.Common.Contract.Enums;
+    using Papers.Common.Enums;
     using Papers.Data.MsSql.Configuration;
     using Papers.Data.MsSql.Models;
 

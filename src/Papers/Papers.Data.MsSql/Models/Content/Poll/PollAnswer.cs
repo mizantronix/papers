@@ -1,7 +1,5 @@
 ﻿namespace Papers.Data.MsSql.Models.Content.Poll
 {
-    using System.Collections.Generic;
-    
     public class PollAnswer
     {
         public long Id { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Papers.Common.Contract.Exceptions
+﻿namespace Papers.Common.Exceptions
 {
     using System;
 

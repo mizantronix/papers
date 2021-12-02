@@ -1,15 +1,14 @@
-﻿using System.Configuration;
-using Microsoft.EntityFrameworkCore;
-
-namespace Papers.Data.MsSql.Repositories
+﻿namespace Papers.Data.MsSql.Repositories
 {
     using System;
     using System.Linq;
+
+    using Microsoft.EntityFrameworkCore;
+
+    using Papers.Common.Enums;
     using Papers.Data.MsSql.Models;
     using Papers.Data.MsSql.Models.Content;
-    
     using Papers.Data.MsSql.Configuration;
-    using Papers.Common.Contract.Enums;
 
     public interface IMessageRepository
     {
