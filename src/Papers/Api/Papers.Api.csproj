@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Papers.Common\Papers.Common.csproj" />
     <ProjectReference Include="..\Domain\Papers.Domain\Papers.Domain.csproj" />
   </ItemGroup>
 

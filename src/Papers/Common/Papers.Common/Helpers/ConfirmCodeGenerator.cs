@@ -7,42 +7,43 @@
         // TODO test generator
         public static string GenerateConfirmCode(long id, string phoneNumber, string login)
         {
-            var n1 = phoneNumber.Count(c => c == '6');
-            if (n1 == 10)
+            int n1;
+            unchecked
             {
-                n1 = 9;
+                n1 = id.GetHashCode() * 16 + 17;
+                if (n1 < 0)
+                {
+                    n1 *= -1;
+                }
             }
 
-            var n2 = phoneNumber.Count(c => c == '2');
-            if (n2 == 10)
+            int n2;
+            unchecked
             {
-                n2 = 3;
+                n2 = phoneNumber.GetHashCode() * 7 + 41;
+                if (n2 < 0)
+                {
+                    n2 *= -1;
+                }
             }
 
-            var n3 = (10 % (id.ToString()[0] - 48));
-            var n4 = (10 / (id.ToString()[0] - 48));
-            if (n4 == 10)
+            int n3;
+            unchecked
             {
-                n4 = 4;
+                n3 = login.GetHashCode() * 111 + 11;
+                if (n3 < 0)
+                {
+                    n3 *= -1;
+                }
             }
 
-            var n5 = login.Count(c => c is 's' or 'c' or '1');
-            n5 = n5 switch
-            {
-                < 1 => 2,
-                >= 10 => 6,
-                _ => n5
-            };
-
-            var n6 = login.Count(c => c is 'a' or 'y' or 'i');
-            n5 = n6 switch
-            {
-                < 1 => 2,
-                >= 10 => 6,
-                _ => n6
-            };
-
-            return $"{n1}{n2}{n3}{n4}{n5}{n6}";
+            return
+                $"{n1.ToString()[0] - 48}" +
+                $"{n1.ToString()[1] - 48}" +
+                $"{n2.ToString()[0] - 48}" +
+                $"{n2.ToString()[1] - 48}" +
+                $"{n3.ToString()[0] - 48}" +
+                $"{n3.ToString()[1] - 48}";
         }
     }
 }

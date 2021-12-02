@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Papers.Common.Contract\Papers.Common.csproj" />
+    <ProjectReference Include="..\..\Common\Papers.Common\Papers.Common.csproj" />
     <ProjectReference Include="..\..\Papers.Data.MsSql\Papers.Data.MsSql.csproj" />
   </ItemGroup>
 

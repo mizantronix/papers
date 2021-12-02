@@ -1,6 +1,7 @@
 ﻿namespace Papers.Domain
 {
     using Microsoft.Extensions.DependencyInjection;
+
     using Papers.Data.MsSql;
     using Papers.Domain.Managers;
 
