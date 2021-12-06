@@ -24,6 +24,8 @@ namespace Papers.Data.MsSql.Repositories
         User ContinueRegistration(string phone, string login, string firstName, string lastName);
 
         User ConfirmUser(string phone);
+
+        User GetById(long id);
     }
 
     internal class UserRepository : IUserRepository
@@ -155,6 +157,15 @@ namespace Papers.Data.MsSql.Repositories
 
                 context.SaveChanges();
 
+                return user;
+            }
+        }
+
+        public User GetById(long id)
+        {
+            using (var context = new DataContext(this._contextOptions))
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == id);
                 return user;
             }
         }

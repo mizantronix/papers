@@ -14,6 +14,8 @@ namespace Papers.Domain.Managers
         long Register(UserInfo userInfo);
 
         long ConfirmUser(string phone, string code);
+
+        User GetById(long id);
     }
 
     internal class UserManager : IUserManager
@@ -74,6 +76,12 @@ namespace Papers.Domain.Managers
 
             // TODO Code verification
             return this._userRepository.ConfirmUser(phone).Id;
+        }
+
+        public User GetById(long id)
+        {
+            var user = this._userRepository.GetById(long id);
+            return 
         }
     }
 }
