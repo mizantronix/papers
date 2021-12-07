@@ -1,4 +1,6 @@
-﻿namespace Papers.Api.Controllers
+﻿using Papers.Common.Exceptions;
+
+namespace Papers.Api.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +25,13 @@
         [Route("create")]
         public SendResult CreateChat(long creatorId, long targetUserId)
         {
-            var targetUser = this._userManager.
+            var targetUser = this._userManager.GetById(targetUserId);
+            if (targetUser == null)
+            {
+                throw new PapersBusinessException($"User with id {targetUserId} not found");
+            }
+            
+            return SendResult.Success;
         }
     }
 }

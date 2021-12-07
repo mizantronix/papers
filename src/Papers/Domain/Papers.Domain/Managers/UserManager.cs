@@ -80,8 +80,26 @@ namespace Papers.Domain.Managers
 
         public User GetById(long id)
         {
-            var user = this._userRepository.GetById(long id);
-            return 
+            var user = this._userRepository.GetById(id);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new User
+            {
+                Id = user.Id,
+                LastOnlineDateTime = user.LastOnlineDateTime,
+                RegisterDate = user.RegisterDate,
+                State = user.UserState.ToEnumState(),
+                UserInfo = new UserInfo
+                {
+                    FirstName = user.UserInfo.FirstName,
+                    LastName = user.UserInfo.LastName,
+                    Login = user.UserInfo.Login,
+                    UserPhone = user.UserInfo.PhoneNumber
+                }
+            };
         }
     }
 }

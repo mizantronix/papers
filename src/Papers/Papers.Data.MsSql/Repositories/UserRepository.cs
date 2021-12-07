@@ -165,7 +165,7 @@ namespace Papers.Data.MsSql.Repositories
         {
             using (var context = new DataContext(this._contextOptions))
             {
-                var user = context.Users.FirstOrDefault(u => u.Id == id);
+                var user = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id);
                 return user;
             }
         }

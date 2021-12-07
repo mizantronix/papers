@@ -10,6 +10,7 @@
         public static void RegisterDomainDependencies(this IServiceCollection services, string connectionString = null)
         {
             services.RegisterDataDependencies(connectionString);
+            services.AddSingleton<IChatManager, ChatManager>();
             services.AddSingleton<IMessageManager, MessageManager>();
             services.AddSingleton<IUserManager, UserManager>();
         }

@@ -10,12 +10,10 @@
 
         public UserState State { get; set; }
 
-        public DateTime LastOnlineDateTime { get; set; }
+        public DateTime? LastOnlineDateTime { get; set; }
 
-        public DateTime RegisterDate { get; set; }
+        public DateTime? RegisterDate { get; set; }
 
         public UserInfo UserInfo { get; set; }
-
-        public DateTime? LastOnline { get; set; }
     }
 }
