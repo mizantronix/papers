@@ -34,6 +34,10 @@
             var user = this.userRepository.GetDefault();
 
             var chat = this.chatRepository.GetChatById(chatId);
+            if (chat == null)
+            {
+                return SendResult.ChatNotFound;
+            }
 
             this.messageRepository.Send(user, chat, this.messageRepository.GenerateMessage());
             return SendResult.Success;
