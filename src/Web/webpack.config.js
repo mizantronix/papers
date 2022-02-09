@@ -27,7 +27,12 @@ module.exports = {
     },    
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./index.html"
+            template: "./index.html",
+            filename: 'index.html'
+        }),
+        new HtmlWebpackPlugin({
+            template: "./pages/registration.html",
+            filename: './pages/registration.html'
         }),
         new VueLoaderPlugin()
     ],
