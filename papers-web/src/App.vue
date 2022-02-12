@@ -1,16 +1,15 @@
-<template>
-  <div id="app">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
-</template>
+<!--template>
+  <MainPageSelector msg1="старница1" msg2="страница2"/>
+</template-->
 
 <script>
-import Login from './components/Login.vue'
+//import MainPageSelector from './components/MainPageSelector.vue'
+
 
 export default {
   name: 'App',
   components: {
-    Login
+    // MainPageSelector
   }
 }
 </script>
