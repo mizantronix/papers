@@ -1,26 +1,32 @@
-<!--template>
-  <MainPageSelector msg1="старница1" msg2="страница2"/>
-</template-->
+<template>
+  <p v-if="isAuth()">Переключение на окно чата</p>
+  <div v-else class="wrapper">
+    <Login msg="test"/>
+    <Registration msg="test2"/>
+  </div>
+</template>
 
 <script>
 //import MainPageSelector from './components/MainPageSelector.vue'
+import Login from './components/Login.vue'
+import Registration from './components/Registration.vue'
 
 
 export default {
   name: 'App',
   components: {
+    Login,
+    Registration,
     // MainPageSelector
+  },
+  methods:{
+    isAuth() {
+      return false
+    },
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import './styles/common.css'
 </style>
