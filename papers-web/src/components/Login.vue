@@ -2,10 +2,10 @@
   <div class="Login">
     <h1>{{ msg }}</h1>
     <label for="fname">Phone number:</label><br>
-    <input type="text" v-model="phone" name="phoneNumber"><br>
+    <input type="text" v-model="phone" name="phoneNumber"><br><br>
     <label for="fname">Password:</label><br>
-    <input type="text" v-model="password" name="password"><br>
-    <input type="submit" v-on:click="test()" value="Submit">
+    <input type="text" v-model="password" name="password"><br><br>
+    <input type="submit" v-on:click="test()" value="Login">
   </div>
 </template>
 

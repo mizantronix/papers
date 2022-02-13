@@ -1,8 +1,8 @@
 <template>
   <p v-if="isAuth()">Переключение на окно чата</p>
   <div v-else class="wrapper">
-    <Login msg="test"/>
-    <Registration msg="test2"/>
+    <Login msg="Login"/>
+    <Registration msg="Registration"/>
   </div>
 </template>
 
