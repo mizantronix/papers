@@ -3,8 +3,18 @@
     using System;
     using System.Linq;
 
-    public static class ConfirmCodeGenerator
+    public static class CommonExtensions
     {
+        public static int GetPasswordHash(this string password)
+        {
+            unchecked
+            {
+                var hash = 293 * password[0];
+                hash = password.Aggregate(hash, (current, @char) => current * 23 + @char * 43);
+                return hash;
+            }
+        }
+
         public static string GenerateConfirmCode(long id, string phoneNumber, string login)
         {
             var loginLength = login.Length;
@@ -12,15 +22,15 @@
             int n1;
             unchecked
             {
-                n1 = Convert.ToInt32((Math.Log2(loginLength) + login.Count(c => c is 'a' or 'o' or 'i')) * 111.11) ;
+                n1 = Convert.ToInt32((Math.Log2(loginLength) + login.Count(c => c is 'a' or 'o' or 'i')) * 111.11);
             }
 
             int n2;
             unchecked
             {
-                n2 = 
-                    17 + 
-                    Convert.ToInt32(phoneNumber[..5]) - 
+                n2 =
+                    17 +
+                    Convert.ToInt32(phoneNumber[..5]) -
                     Convert.ToInt32(phoneNumber.Substring(5, 5));
                 if (n2 < 0)
                 {
@@ -29,7 +39,7 @@
             }
 
             int n3;
-            
+
             // TODO bad function
             unchecked
             {

@@ -1,17 +1,17 @@
-﻿using Papers.Common.Helpers;
-
-namespace Papers.Domain.Managers
+﻿namespace Papers.Domain.Managers
 {
     using System;
     
     using Papers.Common.Enums;
     using Papers.Common.Exceptions;
+    using Papers.Common.Helpers;
+
     using Papers.Data.MsSql.Repositories;
     using Papers.Domain.Models.User;
 
     public interface IUserManager
     {
-        long Register(UserInfo userInfo);
+        long Register(UserInfo userInfo, string password);
 
         long ConfirmUser(string phone, string code);
 
@@ -27,7 +27,7 @@ namespace Papers.Domain.Managers
             this._userRepository = userRepository;
         }
 
-        public long Register(UserInfo userInfo)
+        public long Register(UserInfo userInfo, string password)
         {
             var user = this._userRepository.GetByPhone(userInfo.UserPhone);
 
@@ -37,7 +37,8 @@ namespace Papers.Domain.Managers
                     userInfo.UserPhone, 
                     userInfo.Login, 
                     userInfo.FirstName,
-                    userInfo.LastName);
+                    userInfo.LastName, 
+                    password.GetPasswordHash());
                 // TODO Send confirm code
 
                 return user.Id;
@@ -69,7 +70,7 @@ namespace Papers.Domain.Managers
         public long ConfirmUser(string phone, string code)
         {
             var user = this._userRepository.GetByPhone(phone);
-            if (user == null || ConfirmCodeGenerator.GenerateConfirmCode(user.Id, phone, user.UserInfo.Login) != code)
+            if (user == null || CommonExtensions.GenerateConfirmCode(user.Id, phone, user.UserInfo.Login) != code)
             {
                 throw new PapersBusinessException("Wrong confirm code");
             }
@@ -89,6 +90,7 @@ namespace Papers.Domain.Managers
             return new User
             {
                 Id = user.Id,
+                PasswordHash = user.PasswordHash,
                 LastOnlineDateTime = user.LastOnlineDateTime,
                 RegisterDate = user.RegisterDate,
                 State = user.UserState.ToEnumState(),

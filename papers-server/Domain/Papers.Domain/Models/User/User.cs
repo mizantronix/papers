@@ -8,6 +8,8 @@
     {
         public long Id { get; set; }
 
+        public int PasswordHash { get; set; }
+
         public UserState State { get; set; }
 
         public DateTime? LastOnlineDateTime { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace Papers.Data.MsSql.Configuration
+﻿using System.Reflection.Emit;
+
+namespace Papers.Data.MsSql.Configuration
 {
     using System.Collections.Generic;
 
@@ -74,6 +76,7 @@
             // User
             modelBuilder.Entity<User>().ToTable("Users", "dbo");
             modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.Entity<User>().Property(u => u.PasswordHash).IsRequired();
 
             modelBuilder.Entity<User>().HasOne(u => u.UserInfo)
                 .WithOne(ui => ui.User).HasForeignKey<User>(u => u.UserInfoId);

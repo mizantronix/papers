@@ -23,7 +23,7 @@
 
         [HttpPost]
         [Route("register")]
-        public SendResult Register(string phone, string login, string firstName, string LastName = null)
+        public SendResult Register(string phone, string login, string firstName, string password, string LastName = null)
         {
             this.userManager.Register(
                 new UserInfo
@@ -32,7 +32,8 @@
                     FirstName = firstName,
                     LastName = LastName,
                     UserPhone = phone
-                });
+                }, 
+                password);
             return SendResult.Success;
         }
 
@@ -48,7 +49,7 @@
         [Route("test")]
         public string TestGenerator(long id, string phone, string login)
         {
-            return ConfirmCodeGenerator.GenerateConfirmCode(id, phone, login);
+            return CommonExtensions.GenerateConfirmCode(id, phone, login);
         }
     }
 }

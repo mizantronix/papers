@@ -19,7 +19,7 @@ namespace Papers.Data.MsSql.Repositories
 
         User GetByPhone(string phone);
 
-        User BeginRegistration(string phone, string login, string firstName, string lastName);
+        User BeginRegistration(string phone, string login, string firstName, string lastName, int passwordHash);
 
         User ContinueRegistration(string phone, string login, string firstName, string lastName);
 
@@ -98,7 +98,7 @@ namespace Papers.Data.MsSql.Repositories
             }
         }
 
-        public User BeginRegistration(string phone, string login, string firstName, string lastName)
+        public User BeginRegistration(string phone, string login, string firstName, string lastName, int passwordHash)
         {
             var user = new User
             {
@@ -109,7 +109,8 @@ namespace Papers.Data.MsSql.Repositories
                     LastName = lastName,
                     Login = login,
                     PhoneNumber = phone
-                }
+                },
+                PasswordHash = passwordHash
             };
 
             using (var context = new DataContext(this._contextOptions))

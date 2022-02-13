@@ -8,6 +8,7 @@
     public class User
     {
         public long Id { get; set; }
+        public int PasswordHash { get; set; }
         public UserInfo UserInfo { get; set; }
         public long UserInfoId { get; set; }
         public byte LastOnlineDeviceType { get; set; }
