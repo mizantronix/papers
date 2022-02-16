@@ -56,8 +56,8 @@ namespace Papers.Api.Controllers
 
             var claimList = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserInfo.Login),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.State.ToString())
+                new (ClaimsIdentity.DefaultNameClaimType, user.UserInfo.Login),
+                new (ClaimsIdentity.DefaultRoleClaimType, user.State.ToString())
             };
             
             var claimsIdentity = new ClaimsIdentity(claimList, "Token", ClaimsIdentity.DefaultNameClaimType,

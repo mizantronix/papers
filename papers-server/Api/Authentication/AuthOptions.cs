@@ -34,6 +34,7 @@
                 ValidateAudience = true,
                 ValidAudience = AuthOptions.Audience,
 
+                // TODO tmp
                 ValidateLifetime = false,
 
                 IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),

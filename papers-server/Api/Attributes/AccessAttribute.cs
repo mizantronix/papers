@@ -14,7 +14,6 @@
     public class AccessAttribute : Attribute, IAuthorizationFilter
     {
         private const string HeaderName = "Authorization";
-
         public UserState UserState;
 
         private AccessAttribute()
@@ -52,8 +51,16 @@
             token = token.Replace("Bearer ", string.Empty);
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = AuthOptions.GetTokenValidationParams();
-            
-            var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+
+            try
+            {
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
             return true;
 
         }
