@@ -1,7 +1,11 @@
+using Microsoft.IdentityModel.Tokens;
+using Papers.Api.Authentication;
+
 namespace Papers.Api
 {
     using System.IO;
-
+    
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -29,6 +33,19 @@ namespace Papers.Api
             var config = builder.Build();
             var connectionString = config.GetConnectionString("DataContext");
             services.RegisterDomainDependencies(connectionString);
+
+            AuthOptions.Configure(
+                "Papers-server", 
+                "Papers-client", 
+                config.GetSection("TokenKey").Value,
+                int.Parse(config.GetSection("TokenLifetime").Value));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = AuthOptions.GetTokenValidationParams();
+                });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

@@ -16,6 +16,8 @@
         long ConfirmUser(string phone, string code);
 
         User GetById(long id);
+
+        User GetByIdentifier(string identifier);
     }
 
     internal class UserManager : IUserManager
@@ -86,6 +88,28 @@
             {
                 return null;
             }
+
+            return new User
+            {
+                Id = user.Id,
+                PasswordHash = user.PasswordHash,
+                LastOnlineDateTime = user.LastOnlineDateTime,
+                RegisterDate = user.RegisterDate,
+                State = user.UserState.ToEnumState(),
+                UserInfo = new UserInfo
+                {
+                    FirstName = user.UserInfo.FirstName,
+                    LastName = user.UserInfo.LastName,
+                    Login = user.UserInfo.Login,
+                    UserPhone = user.UserInfo.PhoneNumber
+                }
+            };
+        }
+
+        public User GetByIdentifier(string identifier)
+        {
+            // TODO phone parsing
+            var user = this._userRepository.GetByPhone(identifier) ?? this._userRepository.GetByLogin(identifier);
 
             return new User
             {

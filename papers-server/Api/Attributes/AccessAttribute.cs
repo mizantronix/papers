@@ -1,11 +1,12 @@
-﻿using Papers.Data.MsSql.Models;
-
-namespace Papers.Api.Attributes
+﻿namespace Papers.Api.Attributes
 {
     using System;
+    using System.IdentityModel.Tokens.Jwt;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
+
+    using Papers.Api.Authentication;
     using Papers.Common.Enums;
 
     // TODO async
@@ -14,14 +15,14 @@ namespace Papers.Api.Attributes
     {
         private const string HeaderName = "Authorization";
 
-        public UserState? UserState;
+        public UserState UserState;
 
         private AccessAttribute()
         {
         }
 
-        // TODO use something else instead UserState
-        public AccessAttribute(UserState? userState)
+        // TODO use something else instead UserState (mb with [flag])
+        public AccessAttribute(UserState userState)
         {
             this.UserState = userState;
         }
@@ -32,19 +33,29 @@ namespace Papers.Api.Attributes
             {
                 var authCode = context.HttpContext.Request.Headers[HeaderName];
                 
-                if (this.UserState.HasValue && this.UserState != Common.Enums.UserState.New && string.IsNullOrEmpty(authCode))
+                if (string.IsNullOrEmpty(authCode))
                 {
                     context.Result = new UnauthorizedObjectResult($"{HeaderName} is required");
                     return;
                 }
 
                 // TODO token validation
-                if (false)
+                if (!TokenIsValid(context.HttpContext.Request.Headers[HeaderName]))
                 {
                     context.Result = new UnauthorizedObjectResult($"{HeaderName} is invalid");
-                    return;
                 }
             }
+        }
+
+        private bool TokenIsValid(string token)
+        {
+            token = token.Replace("Bearer ", string.Empty);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = AuthOptions.GetTokenValidationParams();
+            
+            var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+            return true;
+
         }
     }
 }

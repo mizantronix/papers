@@ -19,6 +19,8 @@ namespace Papers.Data.MsSql.Repositories
 
         User GetByPhone(string phone);
 
+        User GetByLogin(string login);
+
         User BeginRegistration(string phone, string login, string firstName, string lastName, int passwordHash);
 
         User ContinueRegistration(string phone, string login, string firstName, string lastName);
@@ -167,6 +169,15 @@ namespace Papers.Data.MsSql.Repositories
             using (var context = new DataContext(this._contextOptions))
             {
                 var user = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id);
+                return user;
+            }
+        }
+
+        public User GetByLogin(string login)
+        {
+            using (var context = new DataContext(this._contextOptions))
+            {
+                var user = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.Login == login);
                 return user;
             }
         }

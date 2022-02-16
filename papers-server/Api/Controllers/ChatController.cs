@@ -1,10 +1,9 @@
-﻿using Papers.Common.Exceptions;
-
-namespace Papers.Api.Controllers
+﻿namespace Papers.Api.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
 
     using Papers.Common.Enums;
+    using Papers.Common.Exceptions;
     using Papers.Domain.Managers;
     using Papers.Domain.Models.User;
 
