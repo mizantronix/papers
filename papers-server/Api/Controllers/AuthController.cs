@@ -1,4 +1,5 @@
-﻿using Papers.Api.Attributes;
+﻿using Microsoft.AspNetCore.Http;
+using Papers.Api.Attributes;
 
 namespace Papers.Api.Controllers
 {
@@ -23,10 +24,12 @@ namespace Papers.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserManager _userManager;
+        private readonly IHttpContextAccessor _context;
 
-        public AuthController(IUserManager userManager)
+        public AuthController(IUserManager userManager, IHttpContextAccessor context)
         {
             this._userManager = userManager;
+            this._context = context;
         }
 
         [HttpGet]

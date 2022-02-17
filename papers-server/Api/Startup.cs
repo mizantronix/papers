@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using Papers.Api.Authentication;
 
@@ -48,6 +49,7 @@ namespace Papers.Api
                 });
 
             services.AddControllers();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Papers.Api", Version = "v1" });
