@@ -1,25 +1,18 @@
-﻿using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using Microsoft.AspNetCore.Http;
-using Papers.Api.Attributes;
-using Papers.Data.MsSql.Models;
-
-namespace Papers.Api.Controllers
+﻿namespace Papers.Api.Controllers
 {
     using System;
-    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
+    using System.Security.Principal;
+    using System.Text;
     
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.IdentityModel.Tokens;
 
     using Papers.Api.Authentication;
+    using Papers.Api.Attributes;
     using Papers.Common.Enums;
-    using Papers.Common.Exceptions;
     using Papers.Common.Helpers;
     using Papers.Domain.Managers;
 
@@ -28,12 +21,10 @@ namespace Papers.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly IHttpContextAccessor _context;
 
-        public AuthController(IUserManager userManager, IHttpContextAccessor context)
+        public AuthController(IUserManager userManager)
         {
             this._userManager = userManager;
-            this._context = context;
         }
 
         [HttpGet]

@@ -1,4 +1,7 @@
-﻿namespace Papers.Api.Controllers
+﻿using Papers.Api.Models;
+using Papers.Common.Exceptions;
+
+namespace Papers.Api.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
@@ -23,17 +26,22 @@
 
         [HttpPost]
         [Route("register")]
-        public SendResult Register(string phone, string login, string firstName, string password, string LastName = null)
+        public SendResult Register([FromBody]RegisterDataModel registerData)
         {
+            if (registerData == null)
+            {
+                throw new PapersBusinessException($"{nameof(registerData)} is empty");
+            }
+
             this.userManager.Register(
                 new UserInfo
                 {
-                    Login = login,
-                    FirstName = firstName,
-                    LastName = LastName,
-                    UserPhone = phone
-                }, 
-                password);
+                    Login = registerData.Login,
+                    FirstName = registerData.FirstName,
+                    LastName = registerData.LastName,
+                    UserPhone = registerData.Phone
+                },
+                registerData.Password);
             return SendResult.Success;
         }
 

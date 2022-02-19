@@ -9,11 +9,16 @@
     <input type="text" v-model="firstName" name="firstName"><br><br>
     <label for="fname">Last name:</label><br>
     <input type="text" v-model="lastName" name="lastName"><br><br>
-    <input type="submit" v-on:click="test()" value="Registration">
+    <label for="fname">Login:</label><br>
+    <input type="text" v-model="login" name="login"><br><br>
+    <input type="submit" v-on:click="test()" value="Registration1">
+    <input type="submit" v-on:click="register()" value="click">
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'Registration',
   props: {
@@ -31,6 +36,24 @@ export default {
   methods: {
     test: function() {
       console.log("hello " + this.phone + " " + this.password)
+    },
+    register: function() {
+      axios
+        .post('https://localhost:44350/users/register', {
+          firstName: this.firstName,
+          lastName: this.lastName,
+          login: this.login,
+          phone: this.phone,
+          password: this.password
+        }, 
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*'
+          }
+        })
+        .then(function (response) {
+          console.log(response)
+        }) 
     }
   }
 }

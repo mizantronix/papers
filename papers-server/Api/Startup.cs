@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
-using Papers.Api.Authentication;
-
 namespace Papers.Api
 {
     using System.IO;
@@ -14,6 +10,7 @@ namespace Papers.Api
     using Microsoft.Extensions.Hosting;
     using Microsoft.OpenApi.Models;
 
+    using Papers.Api.Authentication;
     using Papers.Domain;
 
     public class Startup
@@ -47,9 +44,8 @@ namespace Papers.Api
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = AuthOptions.GetTokenValidationParams();
                 });
-
+            
             services.AddControllers();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Papers.Api", Version = "v1" });
