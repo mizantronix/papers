@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Papers.Data.MsSql", "Papers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Papers.Common", "Common\Papers.Common\Papers.Common.csproj", "{3F5A035F-AFD5-4B01-8BE4-5F35196A58C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Papers.Events", "Papers.Events\Papers.Events.csproj", "{FF49C6E4-B46A-4079-91C3-0DE11C7DDE83}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,10 +41,6 @@ Global
 		{3F5A035F-AFD5-4B01-8BE4-5F35196A58C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F5A035F-AFD5-4B01-8BE4-5F35196A58C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F5A035F-AFD5-4B01-8BE4-5F35196A58C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF49C6E4-B46A-4079-91C3-0DE11C7DDE83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF49C6E4-B46A-4079-91C3-0DE11C7DDE83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF49C6E4-B46A-4079-91C3-0DE11C7DDE83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF49C6E4-B46A-4079-91C3-0DE11C7DDE83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,7 +50,6 @@ Global
 		{FDF66C50-664D-4604-9F73-D161506A1995} = {715749BE-496E-46BA-B57C-79CF887119BB}
 		{E4B4DD5C-D38D-40FB-A688-A7DA72590229} = {D7669736-8A3B-4812-926B-C272090D434D}
 		{3F5A035F-AFD5-4B01-8BE4-5F35196A58C1} = {3B549ADA-D1CB-4669-8D9F-8DB3EA4AB577}
-		{FF49C6E4-B46A-4079-91C3-0DE11C7DDE83} = {715749BE-496E-46BA-B57C-79CF887119BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6FA8212B-040B-407B-91E1-482A2B848805}
