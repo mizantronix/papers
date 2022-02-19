@@ -1,5 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Security.Principal;
+using System.Text;
+using System.Threading;
+using Microsoft.AspNetCore.Http;
 using Papers.Api.Attributes;
+using Papers.Data.MsSql.Models;
 
 namespace Papers.Api.Controllers
 {
@@ -33,12 +37,11 @@ namespace Papers.Api.Controllers
         }
 
         [HttpGet]
-        [Access(UserState.New)]
-        [Route("whoami")]
-        public IActionResult WhoAmI() 
+        [Access(UserState.Registered, UserState.Removed, UserState.New)]
+        [Route("authTest")]
+        public IActionResult Test()
         {
-            var name = User.Identity?.Name;
-            return Ok($"{name}");
+            return Ok();
         }
 
 
@@ -57,38 +60,29 @@ namespace Papers.Api.Controllers
                 return BadRequest(new { error = "login or password is invalid " });
             }
 
-            var claimList = new List<Claim>
-            {
-                new (ClaimsIdentity.DefaultNameClaimType, user.UserInfo.Login),
-                new (ClaimsIdentity.DefaultRoleClaimType, user.State.ToString())
-            };
-            
-            var claimsIdentity = new ClaimsIdentity(claimList, "Token", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
 
-            var now = DateTime.Now;
-            var expires = now.Add(TimeSpan.FromMinutes(AuthOptions.TokenLifetime));
-            var jst = new JwtSecurityToken(
+            var handler = new JwtSecurityTokenHandler();
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AuthOptions.SecretKey));
+            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+
+            var identity = 
+                new ClaimsIdentity(new GenericIdentity(user.UserInfo.Login),
+                new[]
+                {
+                    new Claim("user_id", user.Id.ToString()),
+                    new Claim("user_state", user.State.ToString()),
+
+                    // TODO auth source
+                    // new Claim("auth_source", user.State.ToString())
+                });
+
+            var token = handler.CreateJwtSecurityToken(subject: identity,
+                signingCredentials: signingCredentials,
                 issuer: AuthOptions.Issuer,
                 audience: AuthOptions.Audience,
-                notBefore: now,
-                claims: claimsIdentity.Claims,
-                expires: expires,
-                signingCredentials: new SigningCredentials(
-                    AuthOptions.GetSymmetricSecurityKey(),
-                    SecurityAlgorithms.HmacSha256));
-
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jst);
-
-            var response = new
-            {
-                access_token = encodedJwt,
-                expires = expires
-            };
-
-            User.AddIdentity(claimsIdentity);
-
-            return Ok(response);
+                expires: DateTime.UtcNow.AddSeconds(42));
+            return Ok(handler.WriteToken(token));
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     using System;
     using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
 
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,16 +15,16 @@
     public class AccessAttribute : Attribute, IAuthorizationFilter
     {
         private const string HeaderName = "Authorization";
-        public UserState UserState;
+        public UserState[] UserStates;
 
         private AccessAttribute()
         {
         }
 
-        // TODO use something else instead UserState (mb with [flag])
-        public AccessAttribute(UserState userState)
+        // TODO use something else instead UserStates (mb with [flag])
+        public AccessAttribute(params UserState[] userStates)
         {
-            this.UserState = userState;
+            this.UserStates = userStates;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -48,21 +49,24 @@
 
         private bool TokenIsValid(string token)
         {
-            token = token.Replace("Bearer ", string.Empty);
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = AuthOptions.GetTokenValidationParams();
 
             try
             {
                 var principal = tokenHandler.ValidateToken(token, validationParameters, out var validatedToken);
+                var stateClaim = principal.Identities.First().Claims.FirstOrDefault(c => c.Type == "user_state");
+                if (this.UserStates.Any(userState => stateClaim.Value == userState.ToString()))
+                {
+                    return true;
+                }
             }
             catch (Exception)
             {
                 return false;
             }
 
-            return true;
-
+            return false;
         }
     }
 }
