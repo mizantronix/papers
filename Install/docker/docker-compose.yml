@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+    nginx:
+        container_name: papers-nginx
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+            - ../../papers-web/dist:/usr/share/nginx/html
