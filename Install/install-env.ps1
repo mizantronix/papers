@@ -4,3 +4,4 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 
 choco install nodejs -y
 
+choco install docker-desktop -y

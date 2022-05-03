@@ -10,3 +10,17 @@ services:
         volumes:
             - ./nginx:/etc/nginx/conf.d
             - ../../papers-web/dist:/usr/share/nginx/html
+        depends_on:
+            - server
+    db:
+        container_name: papers-mssql
+        image: "mcr.microsoft.com/mssql/server"
+        env_file: db.env
+        volumes:
+            - ${DB_VOLUME_PATH}:/var/opt/mssql/data
+    server:
+        container_name: papers-server
+        image: papers-server
+        build: "../../papers-server"
+        depends_on:
+            - db
