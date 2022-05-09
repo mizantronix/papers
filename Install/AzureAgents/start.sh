@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+echo "installing..."
+echo "AZP_URL is $AZP_URL"
+echo "AZP_TOKEN is $AZP_TOKEN"
+echo "AZP_AGENT_NAME is $AZP_AGENT_NAME"
+echo "AZP_POOL is $AZP_POOL"
+
 if [ -z "$AZP_URL" ]; then
     echo 1>&2 "error: missing AZP_URL environment variable"
     exit 1
@@ -47,7 +53,7 @@ source ./env.sh
 
 print_header "1. Configuring Azure Pipelines agent..."
 ./config.sh --unattended \
-    --agent "${AZP_AGENT_NAME:-$(hostname)}" \
+    --agent "$AZP_AGENT_NAME" \
     --url "$AZP_URL" \
     --auth PAT \
     --token $(cat "$AZP_TOKEN_FILE") \
