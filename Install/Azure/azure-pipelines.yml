@@ -3,8 +3,7 @@ variables:
   major: 0
   minor: 0
   build: $(Build.BuildId)
-  fullVersion: "$(major).$(minor).$(build)"
-  revision: $[counter(variables['fullVersion'], 0)]
+  revision: $[counter(variables['build'], 0)]
 
 stages:
 - stage: Preparation
