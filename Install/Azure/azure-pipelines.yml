@@ -1,6 +1,20 @@
 trigger: none
+variables:
+  majorVersion: 0
+  minor: 0
+  build: $(Build.BuildId)
+  revision: $[counter(variables['build'], 1)]
 
 stages:
+- stage: Preparation
+  pool:
+    name: Backend-build
+  jobs: 
+  - job: Preparation
+    steps:
+    - powershell: |
+        Write-Host "##vso[build.updatebuildnumber]$(majorVersion).$(minor).$(build).$(revision)"
+
 - stage: Backend_build
   pool:
     name: Backend-build
@@ -28,5 +42,5 @@ stages:
      runOnce:
        deploy:
          steps:
-           - script: write-host 'test depl'
+           - script: echo 'test depl'
              displayName: 'Dev based stage'
