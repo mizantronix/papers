@@ -1,9 +1,10 @@
 trigger: none
 variables:
-  majorVersion: 0
+  major: 0
   minor: 0
   build: $(Build.BuildId)
-  revision: $[counter(variables['build'], 1)]
+  fullVersion: "$(major).$(minor).$(build)"
+  revision: $[counter(variables['fullVersion'], 0)]
 
 stages:
 - stage: Preparation
@@ -13,7 +14,7 @@ stages:
   - job: Preparation
     steps:
     - powershell: |
-        Write-Host "##vso[build.updatebuildnumber]$(majorVersion).$(minor).$(build).$(revision)"
+        Write-Host "##vso[build.updatebuildnumber]$(major).$(minor).$(build).$(revision)"
 
 - stage: Backend_build
   pool:
