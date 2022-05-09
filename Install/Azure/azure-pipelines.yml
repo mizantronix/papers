@@ -42,5 +42,5 @@ stages:
      runOnce:
        deploy:
          steps:
-           - script: echo 'test depl'
+           - script: echo '$(build.BuildNumber)'
              displayName: 'Dev based stage'
