@@ -1,5 +1,6 @@
 ﻿namespace Papers.Domain
 {
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
     using Papers.Data.MsSql;
@@ -7,12 +8,12 @@
 
     public static class Startup
     {
-        public static void RegisterDomainDependencies(this IServiceCollection services, string connectionString = null)
+        public static void RegisterDomainDependencies(this IServiceCollection services, string connectionString)
         {
             services.RegisterDataDependencies(connectionString);
-            services.AddSingleton<IChatManager, ChatManager>();
-            services.AddSingleton<IMessageManager, MessageManager>();
-            services.AddSingleton<IUserManager, UserManager>();
+            services.AddTransient<IChatManager, ChatManager>();
+            services.AddTransient<IMessageManager, MessageManager>();
+            services.AddTransient<IUserManager, UserManager>();
         }
     }
 }

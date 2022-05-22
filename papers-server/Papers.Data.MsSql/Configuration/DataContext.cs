@@ -1,6 +1,4 @@
-﻿using System.Reflection.Emit;
-
-namespace Papers.Data.MsSql.Configuration
+﻿namespace Papers.Data.MsSql.Configuration
 {
     using System.Collections.Generic;
 
@@ -33,17 +31,6 @@ namespace Papers.Data.MsSql.Configuration
         public DbSet<PollAnswer> PollAnswers { get; set; }
         public DbSet<UserPollAnswer> UserPollAnswers { get; set; }
         
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var connectionString =
-#if DEBUG
-                "Server=localhost;Database=Papers;Trusted_Connection=True;";
-#elif RELEASE
-                "release connection string";
-#endif
-            optionsBuilder.UseSqlServer(connectionString);
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // modelBuilder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);

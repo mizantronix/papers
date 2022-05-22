@@ -2,8 +2,6 @@
 {
     using System.Linq;
 
-    using Microsoft.EntityFrameworkCore;
-
     using Papers.Data.MsSql.Configuration;
     using Papers.Data.MsSql.Models;
 
@@ -14,28 +12,17 @@
 
     internal class ChatRepository : IChatRepository
     {
-        private readonly DbContextOptions<DataContext> _contextOptions;
+        private readonly DataContext _dataContext;
 
-        public ChatRepository()
+        public ChatRepository(DataContext dataContext)
         {
-            var opts = new DbContextOptionsBuilder<DataContext>();
-            var connectionString =
-#if DEBUG
-                "Server=localhost;Database=Papers;Trusted_Connection=True;";
-#elif RELEASE
-                "release connection string";
-#endif
-            opts.UseSqlServer(connectionString);
-            this._contextOptions = opts.Options;
+            this._dataContext = dataContext;
         }
 
         public Chat GetChatById(long id)
         {
-            using (var context = new DataContext(_contextOptions))
-            {
-                var chat = context.Chats.FirstOrDefault(c => c.Id == id);
-                return chat;
-            }
+            var chat = this._dataContext.Chats.FirstOrDefault(c => c.Id == id);
+            return chat;
         }
     }
 }

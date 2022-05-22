@@ -11,9 +11,9 @@
         public static void RegisterDataDependencies(this IServiceCollection services, string connectionString)
         {
             services.AddDbContext<DataContext>(o => o.UseSqlServer(connectionString));
-            services.AddSingleton<IChatRepository, ChatRepository>();
-            services.AddSingleton<IMessageRepository, MessageRepository>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddTransient<IChatRepository, ChatRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
         }
     }
 }

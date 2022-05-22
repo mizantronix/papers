@@ -1,13 +1,11 @@
-﻿using Papers.Common.Exceptions;
-
-namespace Papers.Data.MsSql.Repositories
+﻿namespace Papers.Data.MsSql.Repositories
 {
     using System;
     using System.Linq;
-    using System.Configuration;
 
     using Microsoft.EntityFrameworkCore;
     using Papers.Common.Enums;
+    using Papers.Common.Exceptions;
     using Papers.Data.MsSql.Configuration;
     using Papers.Data.MsSql.Models;
 
@@ -32,58 +30,46 @@ namespace Papers.Data.MsSql.Repositories
 
     internal class UserRepository : IUserRepository
     {
-        private readonly DbContextOptions<DataContext> _contextOptions;
+        private readonly DataContext _dataContext;
 
-        public UserRepository()
+        public UserRepository(DataContext dataContext)
         {
-            var opts = new DbContextOptionsBuilder<DataContext>();
-            var test1 = ConfigurationManager.ConnectionStrings["DataContext"];
-            var connectionString =
-#if DEBUG
-                "Server=localhost;Database=Papers;Trusted_Connection=True;";
-#elif RELEASE
-                "release connection string";
-#endif
-            opts.UseSqlServer(connectionString);
-            this._contextOptions = opts.Options;
+            this._dataContext = dataContext;
         }
 
         public User GetDefault()
         {
-            using (var context = new DataContext(this._contextOptions))
+            var userInfo = this._dataContext.UserInfo.FirstOrDefault(ui => ui.Login == "mizantronix");
+
+            if (userInfo == null)
             {
-                var userInfo = context.UserInfo.FirstOrDefault(ui => ui.Login == "mizantronix");
-
-                if (userInfo == null)
+                userInfo = new UserInfo
                 {
-                    userInfo = new UserInfo
-                    {
-                        Login = "mizantronix",
-                        FirstName = "Andrey",
-                        LastName = "G.",
-                        PhoneNumber = "+79999999999"
-                    };
-                    context.UserInfo.Add(userInfo);
+                    Login = "mizantronix",
+                    FirstName = "Andrey",
+                    LastName = "G.",
+                    PhoneNumber = "+79999999999"
+                };
+                this._dataContext.UserInfo.Add(userInfo);
 
-                    context.SaveChanges();
-                }
-
-                var user = context.Users.FirstOrDefault(u => u.UserInfo.Id == userInfo.Id);
-
-                if (user == null)
-                {
-                    user = new User
-                    {
-                        LastOnlineDeviceType = 10,
-                        UserInfo = userInfo,
-                    };
-
-                    context.Users.Add(user);
-                    context.SaveChanges();
-                }
-
-                return user;
+                this._dataContext.SaveChanges();
             }
+
+            var user = this._dataContext.Users.FirstOrDefault(u => u.UserInfo.Id == userInfo.Id);
+
+            if (user == null)
+            {
+                user = new User
+                {
+                    LastOnlineDeviceType = 10,
+                    UserInfo = userInfo,
+                };
+
+                this._dataContext.Users.Add(user);
+                this._dataContext.SaveChanges();
+            }
+
+            return user;
         }
 
         public User Register()
@@ -93,11 +79,8 @@ namespace Papers.Data.MsSql.Repositories
 
         public User GetByPhone(string phone)
         {
-            using (var context = new DataContext(this._contextOptions))
-            {
-                var u = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
-                return u;
-            }
+            var u = this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
+            return u;
         }
 
         public User BeginRegistration(string phone, string login, string firstName, string lastName, int passwordHash)
@@ -115,71 +98,57 @@ namespace Papers.Data.MsSql.Repositories
                 PasswordHash = passwordHash
             };
 
-            using (var context = new DataContext(this._contextOptions))
+            if (this._dataContext.UserInfo.FirstOrDefault(ui => ui.Login == login) != null)
             {
-                if (context.UserInfo.FirstOrDefault(ui => ui.Login == login) != null)
-                {
-                    throw new PapersBusinessException("Login already exists");
-                }
-                context.Users.Add(user);
-                context.SaveChanges();
+                throw new PapersBusinessException("Login already exists");
             }
+
+            this._dataContext.Users.Add(user);
+            this._dataContext.SaveChanges();
 
             return user;
         }
 
         public User ContinueRegistration(string phone, string login, string firstName, string lastName)
         {
-            using (var context = new DataContext(this._contextOptions))
-            {
-                var user = context.Users.First(u => u.UserInfo.PhoneNumber == phone);
-                
-                user.RegisterDate = DateTime.Now;
+            var user = this._dataContext.Users.First(u => u.UserInfo.PhoneNumber == phone);
 
-                user.UserInfo.FirstName = firstName;
-                user.UserInfo.LastName = lastName;
-                user.UserInfo.Login = login;
-                user.UserState = UserState.NeedVerification.ToByteState();
+            user.RegisterDate = DateTime.Now;
 
-                context.SaveChanges();
+            user.UserInfo.FirstName = firstName;
+            user.UserInfo.LastName = lastName;
+            user.UserInfo.Login = login;
+            user.UserState = UserState.NeedVerification.ToByteState();
 
-                return user;
-            }
+            this._dataContext.SaveChanges();
+
+            return user;
         }
 
         public User ConfirmUser(string phone)
         {
-            using (var context = new DataContext(this._contextOptions))
+            var user = this._dataContext.Users.First(u => u.UserInfo.PhoneNumber == phone);
+            user.UserState = UserState.Registered.ToByteState();
+            if (user.RegisterDate == null)
             {
-                var user = context.Users.First(u => u.UserInfo.PhoneNumber == phone);
-                user.UserState = UserState.Registered.ToByteState();
-                if (user.RegisterDate == null)
-                {
-                    user.RegisterDate = DateTime.Now;
-                }
-
-                context.SaveChanges();
-
-                return user;
+                user.RegisterDate = DateTime.Now;
             }
+
+            this._dataContext.SaveChanges();
+
+            return user;
         }
 
         public User GetById(long id)
         {
-            using (var context = new DataContext(this._contextOptions))
-            {
-                var user = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id);
-                return user;
-            }
+            var user = this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id);
+            return user;
         }
 
         public User GetByLogin(string login)
         {
-            using (var context = new DataContext(this._contextOptions))
-            {
-                var user = context.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.Login == login);
-                return user;
-            }
+            var user = this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.Login == login);
+            return user;
         }
     }
 }
