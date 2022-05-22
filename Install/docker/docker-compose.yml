@@ -5,8 +5,8 @@ services:
         container_name: papers-nginx
         image: nginx:latest
         ports:
-            - "80:80"
-            - "443:443"
+            - "8080:8080"
+            - "8443:8443"
         volumes:
             - ./nginx:/etc/nginx/conf.d
             - ../../papers-web/dist:/usr/share/nginx/html
@@ -15,12 +15,18 @@ services:
     db:
         container_name: papers-mssql
         image: "mcr.microsoft.com/mssql/server"
-        env_file: db.env
+        env_file: 
+            - db.env
+        ports:
+            - "1433:1433"
         volumes:
-            - ${DB_VOLUME_PATH}:/var/opt/mssql/data
+            - D:/sqldata/:/var/opt/mssql/data
     server:
         container_name: papers-server
         image: papers-server
         build: "../../papers-server"
+        ports:
+            - "759:80"
+            - "8442:443"
         depends_on:
             - db
