@@ -25,7 +25,7 @@
 
         User ConfirmUser(string phone);
 
-        User GetById(long id);
+        User GetById(long id, UserState? state = null);
     }
 
     internal class UserRepository : IUserRepository
@@ -139,10 +139,11 @@
             return user;
         }
 
-        public User GetById(long id)
+        public User GetById(long id, UserState? state = null)
         {
-            var user = this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id);
-            return user;
+            return state.HasValue
+                ? this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id && u.UserState == state.Value.ToByteState())
+                : this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.Id == id);
         }
 
         public User GetByLogin(string login)

@@ -22,14 +22,30 @@
 
         [HttpPost]
         [Route("create")]
-        public SendResult CreateChat(long creatorId, long targetUserId)
+        public SendResult CreateChat(long creatorId, long targetUserId, bool isPrivate)
         {
+            var creatorUser = this._userManager.GetById(creatorId);
+            if (creatorUser == null)
+            {
+                throw new PapersBusinessException($"Creator user with id {creatorId} not found");
+            }
+
             var targetUser = this._userManager.GetById(targetUserId);
             if (targetUser == null)
             {
-                throw new PapersBusinessException($"User with id {targetUserId} not found");
+                throw new PapersBusinessException($"Target user with id {targetUserId} not found");
             }
+
+            this._chatManager.CreateSingleChat(creatorId, targetUserId, isPrivate);
             
+            return SendResult.Success;
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public SendResult GetChatById(long id)
+        {
+            var chat = this._chatManager.GetById(id);
             return SendResult.Success;
         }
     }

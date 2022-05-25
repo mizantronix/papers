@@ -71,6 +71,9 @@
 
         public long ConfirmUser(string phone, string code)
         {
+            return this._userRepository.ConfirmUser(phone).Id;
+
+            /*
             var user = this._userRepository.GetByPhone(phone);
             if (user == null || CommonExtensions.GenerateConfirmCode(user.Id, phone, user.UserInfo.Login) != code)
             {
@@ -78,7 +81,7 @@
             }
 
             // TODO Code verification
-            return this._userRepository.ConfirmUser(phone).Id;
+            return this._userRepository.ConfirmUser(phone).Id;*/
         }
 
         public User GetById(long id)

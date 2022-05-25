@@ -45,6 +45,14 @@ namespace Papers.Api.Controllers
             return SendResult.Success;
         }
 
+        [HttpGet]
+        [Route("{id}/state")]
+        public string GetUserState(long id)
+        {
+            var user = this.userManager.GetById(id);
+            return user == null ? "null" : user.State.ToString();
+        }
+
         [HttpPost]
         [Route("confirm")]
         public SendResult Confirm(string phone, string code)
