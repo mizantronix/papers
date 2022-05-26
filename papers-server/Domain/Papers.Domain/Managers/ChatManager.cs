@@ -14,6 +14,10 @@ namespace Papers.Domain.Managers
         Chat GetById(long id);
 
         long CreateSingleChat(long creatorId, long targetId, bool isPrivate);
+
+        long CreateGroupChat(long creatorId, bool isPrivate, long[] memberIds = null, byte[] picture = null);
+
+        void AddUsersInGroupChat(long chatId, long[] ids);
     }
 
     internal class ChatManager : IChatManager
@@ -76,6 +80,22 @@ namespace Papers.Domain.Managers
             }
 
             return this._chatRepository.CreateSingleChat(creatorId, targetId, isPrivate);
+        }
+
+        public long CreateGroupChat(long creatorId, bool isPrivate, long[] memberIds = null, byte[] picture = null)
+        {
+            var chat = this._chatRepository.CreateGroupChat(creatorId, isPrivate, picture);
+            if (memberIds != null)
+            {
+                this._chatRepository.AddUsers(chat.Id, memberIds);
+            }
+
+            return chat.Id;
+        }
+
+        public void AddUsersInGroupChat(long chatId, long[] ids)
+        {
+            this._chatRepository.AddUsers(chatId, ids);
         }
     }
 }

@@ -26,6 +26,8 @@
         User ConfirmUser(string phone);
 
         User GetById(long id, UserState? state = null);
+
+        bool UserExists(long id);
     }
 
     internal class UserRepository : IUserRepository
@@ -111,7 +113,11 @@
 
         public User ContinueRegistration(string phone, string login, string firstName, string lastName)
         {
-            var user = this._dataContext.Users.First(u => u.UserInfo.PhoneNumber == phone);
+            var user = this._dataContext.Users.FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
+            if (user == null)
+            {
+                throw new PapersModelException($"User with phone {phone} not found");
+            }
 
             user.RegisterDate = DateTime.Now;
 
@@ -127,12 +133,14 @@
 
         public User ConfirmUser(string phone)
         {
-            var user = this._dataContext.Users.First(u => u.UserInfo.PhoneNumber == phone);
-            user.UserState = UserState.Registered.ToByteState();
-            if (user.RegisterDate == null)
+            var user = this._dataContext.Users.FirstOrDefault(u => u.UserInfo.PhoneNumber == phone);
+            if (user == null)
             {
-                user.RegisterDate = DateTime.Now;
+                throw new PapersModelException($"User with phone {phone} not found");
             }
+
+            user.UserState = UserState.Registered.ToByteState();
+            user.RegisterDate ??= DateTime.Now;
 
             this._dataContext.SaveChanges();
 
@@ -150,6 +158,11 @@
         {
             var user = this._dataContext.Users.Include(u => u.UserInfo).FirstOrDefault(u => u.UserInfo.Login == login);
             return user;
+        }
+
+        public bool UserExists(long id)
+        {
+            return this._dataContext.Users.Any(u => u.Id == id);
         }
     }
 }

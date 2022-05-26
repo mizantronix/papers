@@ -18,6 +18,8 @@
         User GetById(long id);
 
         User GetByIdentifier(string identifier);
+
+        bool UserExists(long id);
     }
 
     internal class UserManager : IUserManager
@@ -129,6 +131,11 @@
                     UserPhone = user.UserInfo.PhoneNumber
                 }
             };
+        }
+
+        public bool UserExists(long id)
+        {
+            return this._userRepository.UserExists(id);
         }
     }
 }
