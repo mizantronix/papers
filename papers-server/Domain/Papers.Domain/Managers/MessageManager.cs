@@ -1,13 +1,17 @@
 ﻿namespace Papers.Domain.Managers
 {
+    using System;
+    using System.Collections.Generic;
+
     using Papers.Common.Enums;
+    using Papers.Common.Exceptions;
+    using Papers.Data.MsSql.Models.Content;
     using Papers.Data.MsSql.Repositories;
+    using Papers.Domain.Models.Message;
 
     public interface IMessageManager
     {
-        public SendResult Send(long chatId);
-
-        void Test();
+        SendResult Send(long senderId, long chatId, Message message);
     }
 
     internal class MessageManager : IMessageManager
@@ -23,23 +27,53 @@
             this.userRepository = userRepository;
         }
 
-        public void Test()
+        public SendResult Send(long senderId, long chatId, Message message)
         {
-            var user = this.userRepository.GetDefault();
-        }
-
-        public SendResult Send(long chatId)
-        {
-            // TODO GetCurrent()
-            var user = this.userRepository.GetDefault();
-
+            var user = this.userRepository.GetById(senderId);
+            if (user == null)
+            {
+                throw new PapersBusinessException($"User with id {senderId} not found");
+            }
+            
             var chat = this.chatRepository.GetChatById(chatId);
             if (chat == null)
             {
-                return SendResult.ChatNotFound;
+                throw new PapersBusinessException($"Chat with id {senderId} not found");;
             }
 
-            this.messageRepository.Send(user, chat, this.messageRepository.GenerateMessage());
+            var dalMsg = new Data.MsSql.Models.Message
+            {
+                Chat = chat,
+                FromUser = user,
+                Sent = DateTime.Now,
+                Viewed = false,
+            };
+
+            var dalContexts = new List<Content>();
+            foreach (var content in message.MessageContents)
+            {
+                switch (content)
+                {
+                    case TextMessage tm:
+                        dalContexts.Add(new Content
+                        {
+                            Message = dalMsg,
+                            Type = MessageContentType.Text.ToIntContentType(),
+                            ContentText = new ContentText
+                            {
+                                Text = tm.Text,
+                                Title = tm.Title
+                            }
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            dalMsg.Content = dalContexts;
+
+            this.messageRepository.Send(user, chat, dalMsg);
             return SendResult.Success;
         }
     }

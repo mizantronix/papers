@@ -1,6 +1,9 @@
 ﻿namespace Papers.Domain.Models.Message
 {
-    public abstract class MessageContent
+    using System.Runtime.Serialization;
+    
+    [KnownType(typeof(TextMessage))]
+    public class MessageContent
     {
     }
 }

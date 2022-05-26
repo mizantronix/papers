@@ -15,12 +15,10 @@ namespace Papers.Api.Controllers
     [Route("users")]
     public class UserController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
         private readonly IUserManager userManager;
 
-        public UserController(ILogger<WeatherForecastController> logger, IUserManager userManager)
+        public UserController(IUserManager userManager)
         {
-            _logger = logger;
             this.userManager = userManager;
         }
 

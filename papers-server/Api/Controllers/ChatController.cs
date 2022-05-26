@@ -1,12 +1,11 @@
-﻿using System.Linq;
-using Papers.Api.Models;
-
-namespace Papers.Api.Controllers
+﻿namespace Papers.Api.Controllers
 {
+    using System.Linq;
     using System.Text;
 
     using Microsoft.AspNetCore.Mvc;
 
+    using Papers.Api.Models;
     using Papers.Common.Enums;
     using Papers.Common.Exceptions;
     using Papers.Domain.Managers;

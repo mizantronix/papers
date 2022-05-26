@@ -1,6 +1,6 @@
 ﻿namespace Papers.Domain.Models.Message
 {
-    public class TextMessage : Message
+    public class TextMessage : MessageContent
     {
         public string Title { get; set; }
 

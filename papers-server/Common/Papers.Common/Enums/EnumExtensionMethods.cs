@@ -6,24 +6,35 @@
     {
         public static byte ToByteState(this UserState state)
         {
-            switch (state)
+            return state switch
             {
-                case UserState.New:
-                    return 2;
-                case UserState.NeedVerification:
-                    return 4;
-                case UserState.Registered:
-                    return 6;
-                case UserState.Removed:
-                    return 8;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
-            }
+                UserState.New => 2,
+                UserState.NeedVerification => 4,
+                UserState.Registered => 6,
+                UserState.Removed => 8,
+                _ => throw new ArgumentOutOfRangeException(nameof(state), state, null)
+            };
         }
 
         public static UserState ToEnumState(this byte state)
         {
             return (UserState)Enum.Parse(typeof(UserState), state.ToString());
+        }
+
+        public static MessageContentType ToEnumState(this int contentType)
+        {
+            return (MessageContentType)Enum.Parse(typeof(MessageContentType), contentType.ToString());
+        }
+
+        public static int ToIntContentType(this MessageContentType contentType)
+        {
+            return contentType switch
+            {
+                MessageContentType.Text => 1,
+                MessageContentType.Picture => 51,
+                MessageContentType.Poll => 101,
+                _ => throw new ArgumentOutOfRangeException(nameof(contentType), contentType, null)
+            };
         }
     }
 }

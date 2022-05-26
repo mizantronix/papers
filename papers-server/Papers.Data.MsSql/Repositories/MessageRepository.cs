@@ -10,7 +10,7 @@
 
     public interface IMessageRepository
     {
-        SendResult Send(User from, Chat chat, Message message);
+        SendResult Send(User from, Chat chat, Message msg);
 
         // TODO testing
         Message GenerateMessage();

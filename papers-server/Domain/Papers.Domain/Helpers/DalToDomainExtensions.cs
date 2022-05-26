@@ -3,7 +3,7 @@
     using Papers.Common.Enums;
     using Papers.Domain.Models.User;
 
-    public static class DalToDomainHelper
+    public static class DalToDomainExtensions
     {
         public static User ToDomainModel(this Data.MsSql.Models.User user)
         {
