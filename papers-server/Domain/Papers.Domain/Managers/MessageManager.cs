@@ -7,11 +7,14 @@
     using Papers.Common.Exceptions;
     using Papers.Data.MsSql.Models.Content;
     using Papers.Data.MsSql.Repositories;
+    using Papers.Domain.Helpers;
     using Papers.Domain.Models.Message;
 
     public interface IMessageManager
     {
         SendResult Send(long senderId, long chatId, Message message);
+
+        IEnumerable<Message> Get(long chatId, int from, int count);
     }
 
     internal class MessageManager : IMessageManager
@@ -38,7 +41,7 @@
             var chat = this.chatRepository.GetChatById(chatId);
             if (chat == null)
             {
-                throw new PapersBusinessException($"Chat with id {senderId} not found");;
+                throw new PapersBusinessException($"Chat with id {chatId} not found");;
             }
 
             var dalMsg = new Data.MsSql.Models.Message
@@ -79,6 +82,19 @@
 
             this.messageRepository.Send(user, chat, dalMsg);
             return SendResult.Success;
+        }
+
+        public IEnumerable<Message> Get(long chatId, int from, int count)
+        {
+            var chat = this.chatRepository.GetChatById(chatId);
+            if (chat == null)
+            {
+                throw new PapersBusinessException($"Chat with id {chatId} not found"); ;
+            }
+
+            var messages = this.messageRepository.Get(chatId, from, count).ToDomainModel();
+
+            return messages;
         }
     }
 }

@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     using Papers.Api.Models;
+    using System.Collections.Generic;
     using Papers.Common.Enums;
     using Papers.Common.Exceptions;
     using Papers.Domain.Managers;
@@ -28,9 +29,16 @@
                 throw new PapersBusinessException("data model is null");
             }
 
-            this._messageManager.Send(dataModel.SenderId, dataModel.ChatId, dataModel.Message);
-
+            this._messageManager.Send(dataModel.Message.SenderId, dataModel.ChatId, dataModel.Message);
             return SendResult.Success;
+        }
+
+        [HttpGet]
+        [Route("get")]
+        public IEnumerable<Message> Get(long chatId, int from, int count)
+        {
+            var messages = this._messageManager.Get(chatId, from, count);
+            return messages;
         }
     }
 }
