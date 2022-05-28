@@ -14,7 +14,7 @@
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 #if DEBUG
-            // Database.EnsureDeleted();
+            //Database.EnsureDeleted();
 #endif
             Database.EnsureCreated();
         }
@@ -104,6 +104,21 @@
                 .WithMany(m => (ICollection<Content>)m.Content)
                 .HasForeignKey(c => c.MessageId);
 
+            modelBuilder.Entity<Content>().HasOne(c => c.ContentText)
+                .WithOne(c => c.Content)
+                .IsRequired(false)
+                .HasForeignKey<ContentText>(ct => ct.ContentId);
+
+            modelBuilder.Entity<Content>().HasOne(c => c.ContentPicture)
+                .WithOne(c => c.Content)
+                .IsRequired(false)
+                .HasForeignKey<ContentPicture>(ct => ct.ContentId);
+
+            modelBuilder.Entity<Content>().HasOne(c => c.ContentPoll)
+                .WithOne(c => c.Content)
+                .IsRequired(false)
+                .HasForeignKey<ContentPoll>(ct => ct.ContentId);
+
             // ContentText
             modelBuilder.Entity<ContentText>().ToTable("Content_Text", "dbo");
 
@@ -114,7 +129,6 @@
             modelBuilder.Entity<ContentText>()
                 .HasOne(ct => ct.Content)
                 .WithOne(c => c.ContentText)
-                .HasForeignKey<Content>(ct => ct.MessageId)
                 .IsRequired(false);
 
             // ContentPicture
@@ -127,7 +141,6 @@
             modelBuilder.Entity<ContentPicture>()
                 .HasOne(cp => cp.Content)
                 .WithOne(c => c.ContentPicture)
-                .HasForeignKey<Content>(ct => ct.MessageId)
                 .IsRequired(false);
 
             // ContentPoll
@@ -138,7 +151,6 @@
             modelBuilder.Entity<ContentPoll>()
                 .HasOne(cp => (Content)cp.Content)
                 .WithOne(c => c.ContentPoll)
-                .HasForeignKey<Content>(ct => ct.MessageId)
                 .IsRequired(false);
 
             // UserPollAnswer

@@ -55,50 +55,6 @@
             this._dataContext.Messages.Add(messageTo);
             this._dataContext.SaveChanges();
             
-            var pictureContents = new List<ContentPicture>();
-            
-            // var pollContents = new List<ContentPicture>();
-
-            foreach (var contentTo in messageTo.Content)
-            {
-                if (contentTo.ContentText != null)
-                {
-                    this._dataContext.Content.Add(new Content
-                    {
-                        ContentText = new ContentText
-                        {
-                            Text = contentTo.ContentText.Text,
-                            Title = contentTo.ContentText.Title
-                        },
-                        Message = message,
-                        Type = MessageContentType.Text.ToIntContentType(),
-                        ContentPicture = null,
-                        ContentPoll = null,
-                    });
-                }
-
-                if (contentTo.ContentPicture != null)
-                {
-                    pictureContents.Add(new ContentPicture
-                    {
-                        Content = contentTo,
-                        Title = contentTo.ContentPicture.Title,
-                        Data = contentTo.ContentPicture.Data
-                    });
-                }
-
-                if (contentTo.ContentPoll != null)
-                {
-                    // TODO
-                }
-            }
-
-            if (pictureContents.Count > 0)
-            {
-                this._dataContext.ContentPictures.AddRange(pictureContents);
-                this._dataContext.SaveChanges();
-            }
-            
             return SendResult.Success;
         }
     }
