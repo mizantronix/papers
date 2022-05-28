@@ -18,12 +18,10 @@
     
     internal class MessageRepository : IMessageRepository
     {
-        private readonly IUserRepository _userRepository;
         private readonly DataContext _dataContext;
 
-        public MessageRepository(IUserRepository userRepository, DataContext dataContext)
+        public MessageRepository(DataContext dataContext)
         {
-            this._userRepository = userRepository;
             this._dataContext = dataContext;
         }
 

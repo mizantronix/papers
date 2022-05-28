@@ -20,11 +20,13 @@ services:
         ports:
             - "1433:1433"
         volumes:
-            - D:/sqldata/:/var/opt/mssql/data
+            - ${DB_VOLUME_PATH}:/var/opt/mssql/data
     server:
         container_name: papers-server
         image: papers-server
         build: "../../papers-server"
+        volumes:
+            - ${CONFIG_FILE_PATH}:/app/appsettings.json
         ports:
             - "759:80"
             - "8442:443"
