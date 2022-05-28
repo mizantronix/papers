@@ -52,19 +52,23 @@
             var dalContexts = new List<Content>();
             foreach (var content in message.MessageContents)
             {
-                switch (content)
+                switch (content.Type)
                 {
-                    case TextMessage tm:
+                    case MessageContentType.Text:
                         dalContexts.Add(new Content
                         {
                             Message = dalMsg,
                             Type = MessageContentType.Text.ToIntContentType(),
                             ContentText = new ContentText
                             {
-                                Text = tm.Text,
-                                Title = tm.Title
+                                Text = content.Text,
+                                Title = content.Title
                             }
                         });
+                        break;
+                    case MessageContentType.Picture:
+                        break;
+                    case MessageContentType.Poll:
                         break;
                     default:
                         break;

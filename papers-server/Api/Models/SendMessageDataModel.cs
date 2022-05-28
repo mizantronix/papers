@@ -10,7 +10,5 @@
         public long ChatId { get; set; }
 
         public Message Message { get; set; }
-
-        public TextMessage Test { get; set; }
     }
 }

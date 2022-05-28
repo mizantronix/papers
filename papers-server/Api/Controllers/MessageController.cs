@@ -32,12 +32,5 @@
 
             return SendResult.Success;
         }
-        
-        [HttpPost]
-        [Route("test")]
-        public SendResult Test(TextMessage text)
-        {
-            return SendResult.Success;
-        }
     }
 }

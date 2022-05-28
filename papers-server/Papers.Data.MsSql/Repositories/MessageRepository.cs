@@ -1,6 +1,7 @@
 ﻿namespace Papers.Data.MsSql.Repositories
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     
     using Papers.Common.Enums;
@@ -11,9 +12,6 @@
     public interface IMessageRepository
     {
         SendResult Send(User from, Chat chat, Message msg);
-
-        // TODO testing
-        Message GenerateMessage();
     }
     
     internal class MessageRepository : IMessageRepository
@@ -45,7 +43,7 @@
                 chatToSend = this._dataContext.Chats.FirstOrDefault(c => c.Id == chat.Id);
             }
 
-            Message messageTo = new Message
+            var messageTo = new Message
             {
                 Content = message.Content,
                 Chat = chat,
@@ -55,21 +53,33 @@
             };
 
             this._dataContext.Messages.Add(messageTo);
-            foreach (Content contentTo in messageTo.Content)
+            this._dataContext.SaveChanges();
+            
+            var pictureContents = new List<ContentPicture>();
+            
+            // var pollContents = new List<ContentPicture>();
+
+            foreach (var contentTo in messageTo.Content)
             {
                 if (contentTo.ContentText != null)
                 {
-                    this._dataContext.ContentTexts.Add(new ContentText
+                    this._dataContext.Content.Add(new Content
                     {
-                        Content = contentTo,
-                        Text = contentTo.ContentText.Text,
-                        Title = contentTo.ContentText.Title
+                        ContentText = new ContentText
+                        {
+                            Text = contentTo.ContentText.Text,
+                            Title = contentTo.ContentText.Title
+                        },
+                        Message = message,
+                        Type = MessageContentType.Text.ToIntContentType(),
+                        ContentPicture = null,
+                        ContentPoll = null,
                     });
                 }
 
                 if (contentTo.ContentPicture != null)
                 {
-                    this._dataContext.ContentPictures.Add(new ContentPicture
+                    pictureContents.Add(new ContentPicture
                     {
                         Content = contentTo,
                         Title = contentTo.ContentPicture.Title,
@@ -83,33 +93,13 @@
                 }
             }
 
-            this._dataContext.SaveChanges();
-
+            if (pictureContents.Count > 0)
+            {
+                this._dataContext.ContentPictures.AddRange(pictureContents);
+                this._dataContext.SaveChanges();
+            }
+            
             return SendResult.Success;
-        }
-
-        public Message GenerateMessage()
-        {
-            var user = this._userRepository.GetDefault();
-            var message = new Message
-            {
-                FromUser = user,
-                Sent = DateTime.Now,
-                Viewed = false,
-                FromUserId = user.Id,
-            };
-            var content = new Content
-            {
-                Type = 1,
-                ContentText = new ContentText
-                {
-                    Text = "test message",
-                    Title = "test title"
-                },
-                Message = message
-            };
-            message.Content = new[] {content};
-            return message;
         }
     }
 }

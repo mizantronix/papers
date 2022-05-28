@@ -11,8 +11,6 @@
 
     public interface IUserRepository
     {
-        User GetDefault();
-
         User Register();
 
         User GetByPhone(string phone);
@@ -37,41 +35,6 @@
         public UserRepository(DataContext dataContext)
         {
             this._dataContext = dataContext;
-        }
-
-        public User GetDefault()
-        {
-            var userInfo = this._dataContext.UserInfo.FirstOrDefault(ui => ui.Login == "mizantronix");
-
-            if (userInfo == null)
-            {
-                userInfo = new UserInfo
-                {
-                    Login = "mizantronix",
-                    FirstName = "Andrey",
-                    LastName = "G.",
-                    PhoneNumber = "+79999999999"
-                };
-                this._dataContext.UserInfo.Add(userInfo);
-
-                this._dataContext.SaveChanges();
-            }
-
-            var user = this._dataContext.Users.FirstOrDefault(u => u.UserInfo.Id == userInfo.Id);
-
-            if (user == null)
-            {
-                user = new User
-                {
-                    LastOnlineDeviceType = 10,
-                    UserInfo = userInfo,
-                };
-
-                this._dataContext.Users.Add(user);
-                this._dataContext.SaveChanges();
-            }
-
-            return user;
         }
 
         public User Register()

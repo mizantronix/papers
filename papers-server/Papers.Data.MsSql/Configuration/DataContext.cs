@@ -53,10 +53,12 @@
             modelBuilder.Entity<Message>().Property(m => m.Sent).IsRequired();
             modelBuilder.Entity<Message>().Property(m => m.Viewed).IsRequired();
 
-            modelBuilder.Entity<Message>().HasOne(m => m.FromUser)
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.FromUser)
                 .WithMany(u => (ICollection<Message>)u.SentMessages)
                 .HasForeignKey(m => m.FromUserId);
-            modelBuilder.Entity<Message>().HasOne(m => m.Chat)
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Chat)
                 .WithMany(c => (ICollection<Message>)c.Messages)
                 .HasForeignKey(m => m.ChatId);
 
@@ -112,7 +114,8 @@
             modelBuilder.Entity<ContentText>()
                 .HasOne(ct => ct.Content)
                 .WithOne(c => c.ContentText)
-                .HasForeignKey<Content>(ct => ct.MessageId);
+                .HasForeignKey<Content>(ct => ct.MessageId)
+                .IsRequired(false);
 
             // ContentPicture
             modelBuilder.Entity<ContentPicture>().ToTable("Content_Picture", "dbo");
@@ -124,7 +127,8 @@
             modelBuilder.Entity<ContentPicture>()
                 .HasOne(cp => cp.Content)
                 .WithOne(c => c.ContentPicture)
-                .HasForeignKey<Content>(ct => ct.MessageId);
+                .HasForeignKey<Content>(ct => ct.MessageId)
+                .IsRequired(false);
 
             // ContentPoll
             modelBuilder.Entity<ContentPoll>().ToTable("Content_Poll", "dbo");
@@ -134,7 +138,8 @@
             modelBuilder.Entity<ContentPoll>()
                 .HasOne(cp => (Content)cp.Content)
                 .WithOne(c => c.ContentPoll)
-                .HasForeignKey<Content>(ct => ct.MessageId);
+                .HasForeignKey<Content>(ct => ct.MessageId)
+                .IsRequired(false);
 
             // UserPollAnswer
             modelBuilder.Entity<UserPollAnswer>().ToTable("Content_Poll_UserAnswer_Xref", "dbo");
