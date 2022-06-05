@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
     nginx:
@@ -24,7 +24,6 @@ services:
     server:
         container_name: papers-server
         image: papers-server
-        build: "../../papers-server"
         volumes:
             - ${CONFIG_FILE_PATH}:/app/appsettings.json
         ports:

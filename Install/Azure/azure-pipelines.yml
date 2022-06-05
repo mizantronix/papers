@@ -19,11 +19,11 @@ stages:
   pool:
     name: Backend-build
   jobs:
-  - job: build
+  - job: build-server
     steps:
     - powershell: |
-        write-host 'build 123'
-      displayName: 'Run build'
+        docker build --build-arg VERSION=$(build.BuildNumber) --build-arg CONFIGURATION=Release -t papers-server:$(build.BuildNumber) .
+      displayName: 'Build papers-server image'
   - job: 
     displayName: UI tests
     steps:
