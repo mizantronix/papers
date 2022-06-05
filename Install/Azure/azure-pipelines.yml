@@ -19,7 +19,7 @@ stages:
   pool:
     name: Backend-build
   jobs:
-  - job: build-server
+  - job: build_server_image
     steps:
     - powershell: |
         docker build --build-arg VERSION=$(build.BuildNumber) --build-arg CONFIGURATION=Release -t papers-server:$(build.BuildNumber) .
