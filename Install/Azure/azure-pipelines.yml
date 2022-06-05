@@ -23,7 +23,6 @@ stages:
   - job: build_server_image
     steps:
     - powershell: |
-
         docker build --build-arg VERSION=$(build.BuildNumber) --build-arg CONFIGURATION=Release -t papers-server:$(build.BuildNumber) -f $(Build.SourcesDirectory)/papers-server/Dockerfile $(Build.SourcesDirectory)/papers-server
       displayName: 'Build papers-server image'
   - job: 
