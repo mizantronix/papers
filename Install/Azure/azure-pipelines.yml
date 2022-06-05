@@ -14,6 +14,7 @@ stages:
     steps:
     - powershell: |
         Write-Host "##vso[build.updatebuildnumber]$(major).$(minor).$(build).$(revision)"
+      displayName: 'Set build number'
 
 - stage: Backend_build
   pool:
