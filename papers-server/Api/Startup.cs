@@ -49,6 +49,7 @@ namespace Papers.Api
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy", b => b
+                    .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials());
