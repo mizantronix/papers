@@ -46,14 +46,7 @@ namespace Papers.Api
                 });
             
             services.AddControllers();
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", b => b
-                    .AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
-            });
+            services.AddCors();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Papers.Api", Version = "v1" });
@@ -72,8 +65,14 @@ namespace Papers.Api
 
             app.UseHttpsRedirection();
 
-            app.UseRouting();
-            app.UseCors("CorsPolicy");
+            app.UseRouting(); 
+
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true)
+                .AllowCredentials());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
