@@ -6,6 +6,7 @@
     <label for="fname">Password:</label><br>
     <input type="text" v-model="password" name="password"><br><br>
     <input type="submit" v-on:click="test()" value="Login">
+    <label for="fname" v-on:click="GoToRegistration()">Registration</label><br>
   </div>
 </template>
 
@@ -24,6 +25,9 @@ export default {
   methods: {
     test: function() {
       console.log("hello " + this.phone + " " + this.password)
+    },
+    GoToRegistration() {
+      this.$router.push('/registration');
     }
   }
 }

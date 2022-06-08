@@ -39,18 +39,14 @@ export default {
     },
     register: function() {
       axios
-        .post('https://localhost:44350/users/register', {
+        .post('http://localhost:759/users/register', {
           firstName: this.firstName,
           lastName: this.lastName,
           login: this.login,
           phone: this.phone,
           password: this.password
         }, 
-        {
-          headers: {
-            'Access-Control-Allow-Origin': '*'
-          }
-        })
+        {})
         .then(function (response) {
           console.log(response)
         }) 
