@@ -2,7 +2,7 @@ trigger: none
 variables:
   major: 0
   minor: 0
-  build: $(Build.BuildId)
+  build: $[counter(variables['minor']), 30)]
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 0)]
 
 stages:
