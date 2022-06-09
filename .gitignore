@@ -32,4 +32,4 @@ _ReSharper*/
 packages/
 
 node_modules/
-**/Web/build/
+papers-web/.angular

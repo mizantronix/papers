@@ -1,8 +1,0 @@
-.wrapper {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    text-align: center;
-    color: #205f9e;
-    margin-top: 60px;
- }
