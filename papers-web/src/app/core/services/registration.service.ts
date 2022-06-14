@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs';
+// import { map } from 'rxjs/operators';
 
 import { ApiService } from './api.service';
-import { Comment } from '../models';
-import { map } from 'rxjs/operators';
+import { RegistrationData } from '../models'
+import { SendResult } from '../enums/sendResult.enum'
 
 
 @Injectable()
@@ -12,6 +13,12 @@ export class RegistrationService {
     private apiService: ApiService
   ) {}
 
+  register(registrationData: RegistrationData): SendResult {
+    return this.apiService
+    .post('/users/register', { registrationData })
+    .pipe();
+  }
+/*
   add(slug, payload): Observable<Comment> {
     return this.apiService
     .post(
@@ -19,15 +26,5 @@ export class RegistrationService {
       { comment: { body: payload } }
     ).pipe(map(data => data.comment));
   }
-
-  getAll(slug): Observable<Comment[]> {
-    return this.apiService.get(`/articles/${slug}/comments`)
-      .pipe(map(data => data.comments));
-  }
-
-  destroy(commentId, articleSlug) {
-    return this.apiService
-           .delete(`/articles/${articleSlug}/comments/${commentId}`);
-  }
-
+*/
 }

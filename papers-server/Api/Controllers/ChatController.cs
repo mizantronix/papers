@@ -9,7 +9,6 @@
     using Papers.Common.Enums;
     using Papers.Common.Exceptions;
     using Papers.Domain.Managers;
-    using Papers.Domain.Models.User;
 
     [ApiController]
     [Route("chats")]

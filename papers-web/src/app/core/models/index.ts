@@ -1,1 +1,1 @@
-export * from './registrationData.model'
+export * from './registrationData.model';
