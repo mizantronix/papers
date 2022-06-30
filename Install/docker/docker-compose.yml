@@ -23,7 +23,7 @@ services:
             - ${DB_VOLUME_PATH}:/var/opt/mssql/data
     server:
         container_name: papers-server
-        image: papers-server
+        image: papers-server:0.0.34.2
         volumes:
             - ${CONFIG_FILE_PATH}:/app/appsettings.json
         ports:
