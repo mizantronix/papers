@@ -2,12 +2,20 @@
 set -e
 
 dockerRepo=192.168.68.104:1111
-dockerImg=dotnet-alpine
-dockerTag=0.3
+dockerImg=dotnet-build
+dockerTag=0.6
+dockerContainerNameTemplate=dotnet-build
 
-export $dockerRepo
 docker pull "$dockerRepo/$dockerImg:$dockerTag"
+path=$WORKSPACE/papers-server
 
-agentNum=$(cat /proc/sys/kernel/random/uuid | sed 's/[-]//g' | head -c 20)
-docker run -v $WORKSPACE:/home/agent/work -n agent-$agentNum "$dockerRepo/$dockerImg:$dockerTag"
+docker run \
+	-v $path:/home/agent/work \
+    -e BUILD_NUMBER=$BUILD_NUMBER \
+    -e MAJOR_VERSION=0 \
+    -e MINOR_VERSION=2 \
+    --name $dockerContainerNameTemplate-$BUILD_NUMBER \
+    "$dockerRepo/$dockerImg:$dockerTag"
 
+docker rm $dockerContainerNameTemplate-$BUILD_NUMBER
+docker rmi "$dockerRepo/$dockerImg:$dockerTag"
